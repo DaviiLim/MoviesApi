@@ -10,5 +10,6 @@ namespace MoviesApi.Interfaces.Repositories
         Task<UserResponse> GetUserByIdAsync(int id);
         Task<UserResponse> UpdateUserAsync(int id, UpdateUser dto);
         Task<UserResponse> DeleteUserAsync(int id);
+        Task<User> GetUserByEmail(string email);
     }
 }

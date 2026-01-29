@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Azure;
+using Microsoft.EntityFrameworkCore;
 using MoviesApi.DTOs.User;
 using MoviesApi.Entities;
 using MoviesApi.Interfaces.Repositories;
@@ -19,12 +20,25 @@ namespace MoviesApi.Repositories
         }
         public async Task<UserResponse> CreateUserAsync(CreateUserRequest dto)
         {
-            var entity = _mapping.ToEntity(dto);
-            _context.AddAsync(entity);
+            var user = _mapping.ToEntity(dto);
+            _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return _mapping.ToResponse(entity);
+            return _mapping.ToResponse(user);
         }
+
+        public async Task<User> GetUserByEmail(string email)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            return user;
+        }
+
+        public async Task<UserResponse> GetUserByIdAsync(int id)
+        {
+            var user = (await _context.Users.FindAsync(id));
+            return _mapping.ToResponse(user);
+        }
+        //Fazer
         public async Task<UserResponse> DeleteUserAsync(int id)
         {
             throw new NotImplementedException();
@@ -32,16 +46,10 @@ namespace MoviesApi.Repositories
         public async Task<IEnumerable<UserResponse>> GetAllUsersAsync()
         {
             var users = await _context.Users.ToListAsync();
-            var response = users.Select(users => _mapping.ToResponse(users));
-
-            return response;
+            var usersResponse = users.Select(users => _mapping.ToResponse(users));
+            return usersResponse;
         }
-        public async Task<UserResponse?> GetUserByIdAsync(int id)
-        {
-            var response = await _context.Users.FindAsync(id);
-
-            return response;
-        }
+        //Fazer
         public async Task<UserResponse> UpdateUserAsync(int id, UpdateUser dto)
         {
             throw new NotImplementedException();

@@ -1,6 +1,11 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+using MoviesApi.Controllers;
+using MoviesApi.Entities;
+using MoviesApi.Interfaces.Repositories;
+using MoviesApi.Interfaces.Services;
 using MoviesApi.Mapping;
+using MoviesApi.Repositories;
+using MoviesApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +19,20 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         )
     )
 );
-builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
+
+//builder.Services.AddScoped<MovieService>();
+//builder.Services.AddScoped<MovieMapping>();
+//builder.Services.AddScoped<MovieRepository>();
+
+builder.Services.AddScoped<IUserService,UserService>();
+builder.Services.AddScoped<UserMapping>();
+builder.Services.AddScoped<IUserRepository,UserRepository>();
+
+builder.Services.AddScoped<AuthController>();
+builder.Services.AddScoped<IAuthService,AuthService>();
+
+builder.Services.AddScoped<IJwtTokenService,JwtTokenService>();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

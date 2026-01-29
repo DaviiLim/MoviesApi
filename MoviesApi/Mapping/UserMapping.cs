@@ -1,4 +1,5 @@
 ﻿using MoviesApi.DTOs.User;
+using MoviesApi.DTOs.User.Jwt;
 using MoviesApi.Entities;
 
 namespace MoviesApi.Mapping
@@ -12,7 +13,6 @@ namespace MoviesApi.Mapping
                 Name = dto.Name,
                 Email = dto.Email,
                 PasswordHash = dto.PasswordHash,
-                ConfirmPassword = dto.ConfirmPassword
             };
         }
 
@@ -28,6 +28,17 @@ namespace MoviesApi.Mapping
                 CreatedAt = user.CreatedAt,
                 UpdatedAt = user.UpdatedAt,
                 DeletedAt = user.DeletedAt
+            };
+        }
+
+        public UserJwt ToJwtEntity(User user)
+        {
+            return new UserJwt
+            {
+                Id = user.Id,
+                Email = user.Email,
+                Status = user.Status,
+                Role = user.Role
             };
         }
     }

@@ -16,6 +16,6 @@ namespace MoviesApi.DTOs.User
         public string PasswordHash { get; set; }
         [Required]
         [PasswordPropertyText]
-        public string ConfirmPassword { get; set; }
+        public string ConfirmPassword { get; set; } //Ajustar Validações para que ele verifique se as senhas são iguais
     }
 }
