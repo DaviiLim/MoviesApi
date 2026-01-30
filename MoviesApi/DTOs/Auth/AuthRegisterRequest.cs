@@ -1,10 +1,10 @@
-﻿using MoviesApi.Enums;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 
-namespace MoviesApi.DTOs.User
+namespace MoviesApi.DTOs.Auth
 {
-    public class CreateUserRequest
+    // É preciso que ao adm criar um terceiro, seja possível que esse usuário criado consiga DEFINIR SUA SENHA APÓS O LOGIN!
+    public class AuthRegisterRequest
     {
         [Required]
         public string Name { get; set; }
@@ -16,6 +16,6 @@ namespace MoviesApi.DTOs.User
         public string Password { get; set; }
         [Required]
         [PasswordPropertyText]
-        public string ConfirmPassword { get; set; } 
+        public string ConfirmPassword { get; set; }
     }
 }

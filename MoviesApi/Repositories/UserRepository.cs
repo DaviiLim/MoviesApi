@@ -1,7 +1,9 @@
 ﻿using Azure;
 using Microsoft.EntityFrameworkCore;
+using MoviesApi.DTOs.Auth;
 using MoviesApi.DTOs.User;
 using MoviesApi.Entities;
+using MoviesApi.Interfaces.Mappers;
 using MoviesApi.Interfaces.Repositories;
 using MoviesApi.Mapping;
 using System.Reflection.Metadata.Ecma335;
@@ -11,48 +13,51 @@ namespace MoviesApi.Repositories
     public class UserRepository : IUserRepository
     {
         private readonly AppDbContext _context;
-        private readonly UserMapping _mapping;
+        private readonly IUserMapping _mapping;
 
         public UserRepository(AppDbContext context, UserMapping mapping)
         {
             _context = context;
             _mapping = mapping;
         }
-        public async Task<UserResponse> CreateUserAsync(CreateUserRequest dto)
+        public async Task<User> CreateUserAsync(AuthRegisterRequest authRegisterRequest)
         {
-            var user = _mapping.ToEntity(dto);
+            var user = _mapping.AuthRegisterRequestToEntity(authRegisterRequest);
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
-
-            return _mapping.ToResponse(user);
+            return user;
         }
 
-        public async Task<User> GetUserByEmail(string email)
+        public async Task<User> GetUserByEmailAsync(string email)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
             return user;
         }
 
-        public async Task<UserResponse> GetUserByIdAsync(int id)
+        public async Task<User> GetUserByIdAsync(int id)
         {
             var user = (await _context.Users.FindAsync(id));
-            return _mapping.ToResponse(user);
+            return user;
         }
+        public async Task<IEnumerable<User>> GetAllUsersAsync()
+        {
+            return await _context.Users.ToListAsync(); ;
+        }
+
+        public async Task<bool> UpdateUserAsync(User user)
+        {
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
         //Fazer
-        public async Task<UserResponse> DeleteUserAsync(int id)
+        public async Task<bool> DeleteUserAsync(User user)
         {
-            throw new NotImplementedException();
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+            return true;
         }
-        public async Task<IEnumerable<UserResponse>> GetAllUsersAsync()
-        {
-            var users = await _context.Users.ToListAsync();
-            var usersResponse = users.Select(users => _mapping.ToResponse(users));
-            return usersResponse;
-        }
-        //Fazer
-        public async Task<UserResponse> UpdateUserAsync(int id, UpdateUser dto)
-        {
-            throw new NotImplementedException();
-        }
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using MoviesApi.DTOs.Auth;
 using MoviesApi.DTOs.User;
@@ -11,12 +12,10 @@ namespace MoviesApi.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
-        private readonly IUserService _userService;
 
-        public AuthController(IAuthService authService, IUserService userService)
+        public AuthController(IAuthService authService)
         {
             _authService = authService;
-            _userService = userService;
         }
 
         [HttpPost("login")]
@@ -25,12 +24,14 @@ namespace MoviesApi.Controllers
             var token = await _authService.LoginAsync(request);
             return Ok(token);
         }
-        //Mudar para um AuthRegister DTO
+
+        //[Authorize]
         [HttpPost("register")]
-        public async Task<IActionResult> Register(CreateUserRequest dto)
+        public async Task<IActionResult> Register([FromBody]AuthRegisterRequest authRegisterRequest)
         {
-            var userResponse = await _userService.CreateUserAsync(dto);
-            return  Ok(userResponse);
+            await _authService.RegisterAsync(authRegisterRequest);
+            
+            return  Ok();
         }
     }
 }
