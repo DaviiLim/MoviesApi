@@ -1,4 +1,4 @@
-﻿using MoviesApi.Enums;
+﻿using MoviesApi.Enums.User;
 
 namespace MoviesApi.Entities
 {

@@ -12,29 +12,35 @@ namespace MoviesApi.Services
 {
     public class JwtTokenService : IJwtTokenService
     {
-        //Ajustar para as configurações ( fazer _settings ) 
+
+        private readonly IConfiguration _configuration;
+
+        public JwtTokenService(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
         public string GenerateToken(UserJwt jwtEntity)
         {
 
-            var claims = new[]
+            var claims = new List<Claim>
             {
-            new Claim("name", jwtEntity.Id.ToString()),
-            new Claim("email", jwtEntity.Email),
-            new Claim("role",jwtEntity.Role.ToString()),
-            new Claim("status",jwtEntity.Status.ToString())
+            new Claim(ClaimTypes.NameIdentifier, jwtEntity.Id.ToString()),
+            new Claim(ClaimTypes.Name, jwtEntity.Email),
+            new Claim(ClaimTypes.Role,jwtEntity.Role.ToString()),
         };
 
             var key = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes("_settings.Secret_342432432432423")
+                Encoding.UTF8.GetBytes(_configuration["Jwt:Key"])         
             );
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var expireMinutes = int.Parse(_configuration["Jwt:ExpireMinutes"]);
 
             var token = new JwtSecurityToken(
-            issuer: "_settings.Issuer",
-                audience: "_settings.Audience",
+            issuer: _configuration["Jwt:Issuer"],                                            
+                audience: _configuration["Jwt:Audience"],                                 
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(-1),
+                expires: DateTime.UtcNow.AddMinutes(expireMinutes),
                 signingCredentials: creds
             );
 

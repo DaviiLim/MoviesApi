@@ -23,6 +23,7 @@ namespace MoviesApi.Services
         public async Task<string> LoginAsync(AuthLoginRequest authLoginRequest)
         {
             var user = await _userRepository.GetUserByEmailAsync(authLoginRequest.Email);
+            if (user == null) throw new Exception("Email doesn't exist.");
 
             if (!BCrypt.Net.BCrypt.Verify(authLoginRequest.Password,user.Password))
                 throw new Exception("Email or Password is invalid");
@@ -34,19 +35,18 @@ namespace MoviesApi.Services
 
         public async Task<bool> RegisterAsync(AuthRegisterRequest authRegisterRequest)
         {
-            string password = BCrypt.Net.BCrypt.HashPassword(authRegisterRequest.Password);
-            string confirmPassword = BCrypt.Net.BCrypt.HashPassword(authRegisterRequest.ConfirmPassword);
+            var user = await _userRepository.GetUserByEmailAsync(authRegisterRequest.Email);
 
-            if (BCrypt.Net.BCrypt.Verify(password, confirmPassword))
-                throw new Exception("Email or Password is invalid");
+            if (user != null) throw new Exception("Email already exist."); 
+
+            if (authRegisterRequest.Password != authRegisterRequest.ConfirmPassword)
+                throw new Exception("Password and Confirm Password must match.");
+
+            string password = BCrypt.Net.BCrypt.HashPassword(authRegisterRequest.Password);
 
             authRegisterRequest.Password = password;
-            authRegisterRequest.ConfirmPassword = confirmPassword;
-
-            var user = await _userRepository.CreateUserAsync(authRegisterRequest);
-
-            if (user == null)
-                throw new Exception("User not created");
+            
+            await _userRepository.CreateUserAsync(_mapping.AuthRegisterRequestToEntity(authRegisterRequest));
 
             return true;
         }

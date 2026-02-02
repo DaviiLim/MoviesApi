@@ -1,4 +1,4 @@
-﻿using MoviesApi.Enums;
+﻿using MoviesApi.Enums.User;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -8,14 +8,15 @@ namespace MoviesApi.DTOs.User
     {
         [Required]
         public string Name { get; set; }
+
         [Required]
         [EmailAddress]
         public string Email { get; set; }
-        [Required]
-        [PasswordPropertyText]
-        public string Password { get; set; }
-        [Required]
-        [PasswordPropertyText]
-        public string ConfirmPassword { get; set; } 
+
+        public UserRole Role { get; set; }
+
+        public string Password { get; set; }                                // reavalair
+
     }
 }
+

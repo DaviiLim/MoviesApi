@@ -1,4 +1,4 @@
-﻿using MoviesApi.Enums;
+﻿using MoviesApi.Enums.User;
 using System.ComponentModel.DataAnnotations;
 
 namespace MoviesApi.DTOs.User.Jwt

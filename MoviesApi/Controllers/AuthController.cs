@@ -25,7 +25,6 @@ namespace MoviesApi.Controllers
             return Ok(token);
         }
 
-        //[Authorize]
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody]AuthRegisterRequest authRegisterRequest)
         {

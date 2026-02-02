@@ -16,27 +16,29 @@ namespace MoviesApi.Controllers
             _userService = userService;
         }
 
-        //[Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
-        //public async Task<IActionResult> CreateUserAsync(CreateUserRequest dto)
-        //{
-        //    return Ok(await _userService.CreateUserAsync(dto));
-        //}
+        public async Task<IActionResult> CreateUserAsync(CreateUserRequest createUserRequest)
+        {
+            return Ok(await _userService.CreateUserAsync(createUserRequest));
+        }
+
+        [Authorize(Roles = "DefaultUser,Admin")]
         [HttpGet]
-        [Route("get/{id}")]
+        [Route("{id}")]
         public async Task<IActionResult> GetUserByIdAsync(int id)
         {
             return Ok(await _userService.GetUserByIdAsync(id));
         }
 
-        //[Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetAllUsersAsync()
         {
             return Ok(await _userService.GetAllUsersAsync());
         }
 
-        //[Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         [Route("email/{id}")]
         public async Task<IActionResult> GetUserByEmailAsync(int id)
@@ -44,15 +46,15 @@ namespace MoviesApi.Controllers
             return Ok(await _userService.GetUserByIdAsync(id));
         }
 
-        //[Authorize]
-        [HttpPut]                                                                  
+        [Authorize(Roles = "Admin")]
+        [HttpPut]
         [Route("update/{id}")]
         public async Task<IActionResult> UpdateUserAsync(int id, UpdateUser updateUser)
         {
             return Ok(await _userService.UpdateUserAsync(id, updateUser));
         }
 
-        //[Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpDelete]
         [Route("delete/{id}")]
         public async Task<IActionResult> DeleteUserAsync(int id)

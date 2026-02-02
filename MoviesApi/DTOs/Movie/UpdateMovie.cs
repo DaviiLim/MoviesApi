@@ -2,8 +2,7 @@
 
 namespace MoviesApi.DTOs.Movie
 {
-                                                                            //melhorar validações
-    public class CreateMovieRequest
+    public class UpdateMovie
     {
         [Required]
         [StringLength(255, ErrorMessage = "Must be between 5 and 255 characters", MinimumLength = 5)]

@@ -15,6 +15,7 @@ namespace MoviesApi.Mapping
                 Name = createUserRequest.Name,
                 Email = createUserRequest.Email,
                 Password = createUserRequest.Password,
+                Role = createUserRequest.Role
             };
         }
 

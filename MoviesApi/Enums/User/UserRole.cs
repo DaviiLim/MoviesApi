@@ -1,4 +1,4 @@
-﻿namespace MoviesApi.Enums
+﻿namespace MoviesApi.Enums.User
 {
     public enum UserRole
     {
