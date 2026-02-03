@@ -23,7 +23,7 @@ namespace MoviesApi.Repositories
             return vote;
         }
 
-        public async Task<IEnumerable<Vote>> GetAllMovieVotes(int movieId)
+        public async Task<IEnumerable<Vote>> GetMovieScore(int movieId)
         {
             return await _context.Votes.ToListAsync();
         }

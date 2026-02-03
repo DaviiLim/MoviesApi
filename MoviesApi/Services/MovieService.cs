@@ -80,11 +80,12 @@ namespace MoviesApi.Services
             return true;
         }
 
-        public async Task<float> GetAllMovieVotes(int movieId)
+        public async Task<float> GetMovieScore(int movieId)
         {
-            var movies = await _voteRepository.GetAllMovieVotes(movieId);
+            var movies = await _voteRepository.GetMovieScore(movieId);
             var score = movies.Sum(m => m.Score);
-            return score;
+            var count = movies.Count();
+            return score/count;
         }
 
     }

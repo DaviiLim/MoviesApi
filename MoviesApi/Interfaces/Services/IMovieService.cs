@@ -10,5 +10,7 @@ namespace MoviesApi.Interfaces.Services
         Task<MovieResponse> GetMovieByIdAsync(int id);
         Task<bool> UpdateMovieAsync(int id, UpdateMovie updateMovie);
         Task<bool> DeleteMovieAsync(int id);
+        //teste
+        Task<float> GetMovieScore(int movieId);
     }
 }
