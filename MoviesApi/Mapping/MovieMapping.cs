@@ -20,7 +20,8 @@ namespace MoviesApi.Mapping
                 Genres = createMovieRequest.Genres,
                 Duration = createMovieRequest.Duration,
                 Cast = createMovieRequest.Cast,
-                Directors = createMovieRequest.Directors
+                Directors = createMovieRequest.Directors,
+                ReleasedYear = createMovieRequest.ReleasedYear
 
             };
         }
@@ -36,7 +37,8 @@ namespace MoviesApi.Mapping
                 Genres = movie.Genres,
                 Duration = movie.Duration,
                 Cast = movie.Cast,
-                Directors = movie.Directors
+                Directors = movie.Directors,
+                ReleasedYear = movie.ReleasedYear
             };
         }
     }

@@ -58,6 +58,7 @@ namespace MoviesApi.Services
             movie.Duration = updateMovie.Duration;
             movie.Cast = updateMovie.Cast;
             movie.Directors = updateMovie.Directors;
+            movie.ReleasedYear = updateMovie.ReleasedYear;
 
             movie.UpdatedAt = DateTime.Now;
             await _movieRepository.UpdateMovieAsync(movie);

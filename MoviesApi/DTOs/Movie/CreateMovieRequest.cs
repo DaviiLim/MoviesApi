@@ -26,5 +26,8 @@ namespace MoviesApi.DTOs.Movie
 
         [Required]
         public List<string> Directors { get; set; }
+
+        [Required]
+        public DateTime ReleasedYear { get; set; }
     }
 }

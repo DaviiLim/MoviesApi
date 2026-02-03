@@ -10,5 +10,6 @@
         public float Duration { get; set; }
         public List<string> Cast { get; set; }
         public List<string> Directors { get; set; }
+        public DateTime ReleasedYear { get; set; }
     }
 }
