@@ -58,13 +58,18 @@ builder.Services.AddScoped<IMovieMapping,MovieMapping>();
 builder.Services.AddScoped<IMovieRepository,MovieRepository>();
 
 builder.Services.AddScoped<IUserService,UserService>();
-builder.Services.AddScoped<UserMapping>();
+builder.Services.AddScoped<IUserMapping,UserMapping>();
 builder.Services.AddScoped<IUserRepository,UserRepository>();
 
-builder.Services.AddAuthorization();
-builder.Services.AddScoped<IAuthService,AuthService>();
+builder.Services.AddScoped<IVoteService, VoteService>();
+builder.Services.AddScoped<IVoteMapping,VoteMapping>();
+builder.Services.AddScoped<IVoteRepository, VoteRepository>();
 
-builder.Services.AddScoped<IJwtTokenService,JwtTokenService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+
+builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
+
+builder.Services.AddAuthorization();
 
 builder.Services.AddEndpointsApiExplorer();
 

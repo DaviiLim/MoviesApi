@@ -13,7 +13,7 @@ namespace MoviesApi.Services
         private readonly IUserRepository _userRepository;                
         private readonly IUserMapping _mapping;                              
 
-        public AuthService(IJwtTokenService tokenService, IUserRepository userRepository, UserMapping mapping)
+        public AuthService(IJwtTokenService tokenService, IUserRepository userRepository, IUserMapping mapping)
         {
             _tokenService = tokenService;
             _userRepository = userRepository;

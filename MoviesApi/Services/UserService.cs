@@ -16,7 +16,7 @@ namespace MoviesApi.Services
         private readonly IUserRepository _userRepository;
         private readonly IUserMapping _mapping;
 
-        public UserService(IUserRepository userRepository, UserMapping mapping)
+        public UserService(IUserRepository userRepository, IUserMapping mapping)
         {
             _userRepository = userRepository;
             _mapping = mapping;
@@ -41,7 +41,7 @@ namespace MoviesApi.Services
         public async Task<IEnumerable<UserResponse>> GetAllUsersAsync()
         {
             var users = await _userRepository.GetAllUsersAsync();
-            var usersResponse = users.Where(u => u.Status != UserStatus.Inativo).Select(users => _mapping.ToResponse(users));
+            var usersResponse = users.Select(users => _mapping.ToResponse(users));
             return usersResponse;
         }
 

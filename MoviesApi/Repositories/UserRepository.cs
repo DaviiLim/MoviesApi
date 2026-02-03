@@ -16,7 +16,7 @@ namespace MoviesApi.Repositories
 
         public async Task<User> CreateUserAsync(User user)
         {
-            _context.Users.Add(user);
+            await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
             return user;
         }
@@ -26,16 +26,14 @@ namespace MoviesApi.Repositories
             return await _context.Users.ToListAsync(); ;
         }
 
-        public async Task<User> GetUserByIdAsync(int id)
+        public async Task<User?> GetUserByIdAsync(int id)
         {
-            var user = (await _context.Users.FindAsync(id));
-            return user;
+            return await _context.Users.FindAsync(id);
         }
 
-        public async Task<User> GetUserByEmailAsync(string email)
+        public async Task<User?> GetUserByEmailAsync(string email)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
-            return user;
+            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email); ;
         }
 
         public async Task<bool> UpdateUserAsync(User user)

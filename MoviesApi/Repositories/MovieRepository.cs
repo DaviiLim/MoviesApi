@@ -15,7 +15,7 @@ namespace MoviesApi.Repositories
 
         public async Task<Movie> CreateMovieAsync(Movie movie)
         {
-            _context.Movies.Add(movie);
+            await _context.Movies.AddAsync(movie);
             await _context.SaveChangesAsync();
             return movie;
         }
@@ -25,10 +25,9 @@ namespace MoviesApi.Repositories
             return await _context.Movies.ToListAsync();
         }
 
-        public async Task<Movie> GetMovieByIdAsync(int id)
+        public async Task<Movie?> GetMovieByIdAsync(int id)
         {
-            var movie = await _context.Movies.FindAsync(id);
-            return movie;
+            return await _context.Movies.FindAsync(id);
         }
 
         public async Task<bool> UpdateMovieAsync(Movie movie)

@@ -17,11 +17,13 @@ namespace MoviesApi.Services
     {
         private readonly IMovieRepository _movieRepository;
         private readonly IMovieMapping _mapping;
+        private readonly IVoteRepository _voteRepository;
 
-        public MovieService(IMovieRepository movieRepository, IMovieMapping movieMapping)
+        public MovieService(IMovieRepository movieRepository, IMovieMapping movieMapping, IVoteRepository voteRepository)
         {
             _movieRepository = movieRepository;
-            _mapping = movieMapping;
+            _voteRepository = voteRepository;
+           _mapping = movieMapping;
         }
 
         public async Task<MovieResponse> CreateMovieAsync(CreateMovieRequest createMovieRequest)
@@ -76,6 +78,13 @@ namespace MoviesApi.Services
             await _movieRepository.UpdateMovieAsync(movie);
 
             return true;
+        }
+
+        public async Task<float> GetAllMovieVotes(int movieId)
+        {
+            var movies = await _voteRepository.GetAllMovieVotes(movieId);
+            var score = movies.Sum(m => m.Score);
+            return score;
         }
 
     }
