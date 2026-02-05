@@ -13,35 +13,37 @@ namespace MoviesApi.Controllers
     public class VoteController : ControllerBase
     {
         private readonly IVoteService _voteService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public VoteController(IVoteService voteService)
+        public VoteController(IVoteService voteService, IHttpContextAccessor httpContextAccessor)
         {
             _voteService = voteService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         [Authorize(Roles = "DefaultUser, Admin")]
         [HttpPost]
         public async Task<IActionResult> VoteAsync(CreateVoteRequest createVoteRequest)
         {
-            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-            await _voteService.VoteAsync(userId, createVoteRequest);
+            var userId = int.Parse(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
             return Ok(await _voteService.VoteAsync(userId, createVoteRequest));
         }
 
         [Authorize(Roles = "DefaultUser, Admin")]
         [HttpGet]
-        public async Task<IActionResult> GetAllVotesAsync()
+        [Route("{movieId}")]
+        public async Task<IActionResult> GetMovieScore(int movieId)
         {
-           
-            return Ok(await _voteService.GetAllVotesAsync());
+            var userId = int.Parse(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            return Ok(await _voteService.GetMovieScore(userId, movieId));
         }
 
         [Authorize(Roles = "DefaultUser, Admin")]
         [HttpGet]
-        [Route("{id}")]
-        public async Task<IActionResult?> GetVoteByIdAsync(int id)
+        public async Task<IActionResult> GetUserVotedMovies()
         {
-            return Ok(await _voteService.GetVoteByIdAsync(id));
+            var userId = int.Parse(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            return Ok(await _voteService.GetUserVotedMovies(userId));
         }
 
         [Authorize(Roles = "DefaultUser, Admin")]
@@ -49,7 +51,9 @@ namespace MoviesApi.Controllers
         [Route("{id}")]
         public async Task<IActionResult> DeleteVoteAsync(int id)
         {
-            return Ok(await _voteService.DeleteVoteAsync(id));
+            var userId = int.Parse(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            return Ok(await _voteService.DeleteVoteAsync(userId,id));
         }
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using MoviesApi.DTOs.Vote;
+﻿using MoviesApi.DTOs.Movie;
+using MoviesApi.DTOs.Vote;
 using MoviesApi.Entities;
 using MoviesApi.Interfaces.Mappers;
 
@@ -11,23 +12,19 @@ namespace MoviesApi.Mapping
         {
             return new Vote
             {
-                UserId = createVoteRequest.UserId,
                 MovieId = createVoteRequest.MovieId,
                 Score = createVoteRequest.Score
-
             };
         }
 
-        public VoteResponse ToResponse(Vote vote)
+        public VoteResponse ToResponse(Vote vote, MovieResponse movieResponse)
         {
             return new VoteResponse
             {
                 Id = vote.Id,
-                UserId = vote.UserId,
-                MovieId = vote.MovieId,
+                Movie = movieResponse,
                 Score = vote.Score
             };
-
         }
     }
 }

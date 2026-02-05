@@ -22,7 +22,7 @@ namespace MoviesApi.Repositories
 
         public async Task<IEnumerable<Movie>> GetAllMovieAsync()
         {
-            return await _context.Movies.ToListAsync();
+            return await _context.Movies.OrderBy(m => m.Title).ToListAsync();
         }
 
         public async Task<Movie?> GetMovieByIdAsync(int id)

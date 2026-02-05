@@ -1,13 +1,8 @@
-﻿using Azure.Core;
-using MoviesApi.DTOs.Auth;
-using MoviesApi.DTOs.User;
-using MoviesApi.Entities;
+﻿using MoviesApi.DTOs.User;
 using MoviesApi.Enums.User;
 using MoviesApi.Interfaces.Mappers;
 using MoviesApi.Interfaces.Repositories;
 using MoviesApi.Interfaces.Services;
-using MoviesApi.Mapping;
-using System.Runtime.InteropServices;
 
 namespace MoviesApi.Services
 {
@@ -22,7 +17,7 @@ namespace MoviesApi.Services
             _mapping = mapping;
         }
 
-                                    //    ---------- testes
+        //    ---------- testes
         public async Task<UserResponse> CreateUserAsync(CreateUserRequest createUserRequest)
         {
             var userEmail = await _userRepository.GetUserByEmailAsync(createUserRequest.Email);
@@ -33,7 +28,7 @@ namespace MoviesApi.Services
 
             createUserRequest.Password = password;
 
-           var user = await _userRepository.CreateUserAsync(_mapping.CreateUserRequestToEntity(createUserRequest));
+            var user = await _userRepository.CreateUserAsync(_mapping.CreateUserRequestToEntity(createUserRequest));
 
             return _mapping.ToResponse(user);
         }
@@ -52,6 +47,7 @@ namespace MoviesApi.Services
             return _mapping.ToResponse(userResponse);
         }
 
+
         public async Task<UserResponse> GetUserByEmailAsync(string email)
         {
             var user = await _userRepository.GetUserByEmailAsync(email);
@@ -60,7 +56,7 @@ namespace MoviesApi.Services
             return _mapping.ToResponse(user);
         }
 
-                                                                                                                    //Reavaliar
+        //Reavaliar
         public async Task<bool> UpdateUserAsync(int id, UpdateUser updateUser)
         {
             var user = await _userRepository.GetUserByIdAsync(id);
@@ -74,7 +70,7 @@ namespace MoviesApi.Services
             return true;
         }
 
-                                                                                                                     //Fazer
+        //Fazer
         public async Task<bool> DeleteUserAsync(int id)
         {
             var user = await _userRepository.GetUserByIdAsync(id);

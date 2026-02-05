@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MoviesApi.DTOs.User;
-using MoviesApi.DTOs.Vote;
 using MoviesApi.Entities;
 using MoviesApi.Interfaces.Repositories;
 
@@ -15,7 +13,7 @@ namespace MoviesApi.Repositories
             _context = context;
         }
 
-        public async Task<Vote> VoteAsync(Vote vote)                      //void?
+        public async Task<Vote> VoteAsync(Vote vote)
         {
             await _context.Votes.AddAsync(vote);
             await _context.SaveChangesAsync();
@@ -23,11 +21,12 @@ namespace MoviesApi.Repositories
             return vote;
         }
 
-        public async Task<IEnumerable<Vote>> GetMovieScore(int movieId)
+        public async Task<IEnumerable<Vote>> GetAllVotesAsync()
         {
-            return await _context.Votes.ToListAsync();
+            return await _context.Votes
+            .Include(v => v.Movie)
+            .ToListAsync();
         }
-
 
         public async Task<Vote?> GetVoteByIdAsync(int id)
         {

@@ -1,10 +1,9 @@
-﻿using MoviesApi.DTOs.Vote;
+﻿using MoviesApi.DTOs.Movie;
+using MoviesApi.DTOs.Vote;
 using MoviesApi.Entities;
-using MoviesApi.Enums.User;
 using MoviesApi.Interfaces.Mappers;
 using MoviesApi.Interfaces.Repositories;
 using MoviesApi.Interfaces.Services;
-using MoviesApi.Repositories;
 
 namespace MoviesApi.Services
 {
@@ -20,7 +19,6 @@ namespace MoviesApi.Services
             _userRepository = userRepository;
             _movieRepository = movieRepository;
             _mapping = mapping;
-            
         }
 
         public VoteService(IVoteRepository voteRepository)
@@ -28,7 +26,7 @@ namespace MoviesApi.Services
             _voteRepository = voteRepository;
         }
 
-        public async Task<VoteResponse> VoteAsync(int userId, CreateVoteRequest createVoteRequest)
+        public async Task<bool> VoteAsync(int userId, CreateVoteRequest createVoteRequest)
         {
             var user = await _userRepository.GetUserByIdAsync(userId);
             if (user == null) throw new Exception("User not found");
@@ -41,49 +39,72 @@ namespace MoviesApi.Services
 
             await _voteRepository.VoteAsync(vote);
 
-            vote.Movie = movie;
-            vote.User = user;
-
-            return _mapping.ToResponse(vote);
+            return true;
         }
 
-        public async Task<VoteResponse?> GetVoteByIdAsync(int id)
+        public async Task<float> GetMovieScore(int userId, int movieId)
         {
-            var vote = await _voteRepository.GetVoteByIdAsync(id);
-            if (vote == null) throw new BadHttpRequestException("User not Found");
+            var user = await _userRepository.GetUserByIdAsync(userId);
+            if (user == null) throw new Exception("User not Found");
 
-            var user = await _userRepository.GetUserByIdAsync(vote.UserId);
-            if (user == null) throw new Exception("User not found");
+            var movie = await _movieRepository.GetMovieByIdAsync(movieId);
+            if (movie == null) throw new Exception("Movie not Found");
 
-            var movie = await _movieRepository.GetMovieByIdAsync(vote.MovieId);
-            if (movie == null) throw new Exception("Movie not found");
+            var votes = await _voteRepository.GetAllVotesAsync();
+            var movieVotes = votes.Where(v => v.MovieId == movieId).ToList();
 
-            vote.Movie = movie;
-            vote.User = user;
+            if (!movieVotes.Any()) return 0;
 
-            return _mapping.ToResponse(vote);
+            return movieVotes.Average(v => v.Score);
         }
 
-        public async Task<bool> DeleteVoteAsync(int id)
+        public async Task<List<VoteResponse>> GetUserVotedMovies(int userId)
         {
-            var vote = await _voteRepository.GetVoteByIdAsync(id);
+            var user = await _userRepository.GetUserByIdAsync(userId);
+            if (user == null)
+                throw new Exception("User not Found");
 
-            if (vote == null) throw new BadHttpRequestException("User not Found");
+            var votes = await _voteRepository.GetAllVotesAsync();
+
+            var userVotes = votes
+                .Where(v => v.UserId == userId)
+                .Select(v => new VoteResponse
+                {
+                    Id = v.Id,
+                    Score = v.Score,
+                    Movie = new MovieResponse
+                    {
+                        Id = v.Movie.Id,
+                        Title = v.Movie.Title,
+                        Synops = v.Movie.Synops,
+                        Classification = v.Movie.Classification,
+                        Genres = v.Movie.Genres,
+                        Duration = v.Movie.Duration,
+                        Cast = v.Movie.Cast,
+                        Directors = v.Movie.Directors,
+                        ReleasedYear = v.Movie.ReleasedYear
+                    }
+                })
+                .ToList();
+
+            return userVotes;
+        }
+
+
+
+        public async Task<bool> DeleteVoteAsync(int userId,int voteId)
+        {
+            var user = await _userRepository.GetUserByIdAsync(userId);
+            if (user == null) throw new Exception("User not Found");
+
+            var vote = await _voteRepository.GetVoteByIdAsync(voteId);
+
+            if (vote.UserId != userId) throw new BadHttpRequestException("Bad Request");
 
             vote.DeletedAt = DateTime.Now;
-
-            await _voteRepository.DeleteVoteAsync(vote);
-
             return true;
 
 
         }
-
-        public Task<IEnumerable<VoteResponse>> GetAllVotesAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-
     }
 }

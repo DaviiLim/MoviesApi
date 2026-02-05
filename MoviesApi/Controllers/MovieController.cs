@@ -57,13 +57,6 @@ namespace MoviesApi.Controllers
             return Ok(await _movieService.DeleteMovieAsync(id)); 
         }
 
-        //[Authorize(Roles = "Admin")]
-        [HttpGet]
-        [Route("score")]
-        public async Task<IActionResult> GetMovieScore(int movieId)
-        {
-            return Ok(await _movieService.GetMovieScore(movieId));
-        }
     }
 
 }

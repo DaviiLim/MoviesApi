@@ -5,9 +5,9 @@ namespace MoviesApi.Interfaces.Services
 {
     public interface IVoteService
     {
-        Task<VoteResponse> VoteAsync(int userId, CreateVoteRequest createVoteRequest);
-        Task<IEnumerable<VoteResponse>> GetAllVotesAsync();
-        Task<VoteResponse?> GetVoteByIdAsync(int id);
-        Task<bool> DeleteVoteAsync(int id);
+        Task<bool> VoteAsync(int userId, CreateVoteRequest createVoteRequest);
+        Task<List<VoteResponse>> GetUserVotedMovies(int userId);
+        Task<float> GetMovieScore(int userId, int movieId);
+        Task<bool> DeleteVoteAsync(int userId, int id);
     }
 }
