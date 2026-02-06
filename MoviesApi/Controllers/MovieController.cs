@@ -54,7 +54,7 @@ namespace MoviesApi.Controllers
         [Route("delete/{id}")]
         public async Task<IActionResult> DeleteMovieAsync(int id)
         {
-            return Ok(await _movieService.DeleteMovieAsync(id)); 
+            return Ok(await _movieService.DeleteMovieAsync(id));
         }
 
     }

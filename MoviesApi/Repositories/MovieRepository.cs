@@ -22,12 +22,18 @@ namespace MoviesApi.Repositories
 
         public async Task<IEnumerable<Movie>> GetAllMovieAsync()
         {
-            return await _context.Movies.OrderBy(m => m.Title).ToListAsync();
+            return await _context.Movies
+                .Include(m => m.Votes)
+                .OrderByDescending(m => m.Votes.Count())
+                .ThenBy(m => m.Title)
+                .ToListAsync();
         }
 
         public async Task<Movie?> GetMovieByIdAsync(int id)
         {
-            return await _context.Movies.FindAsync(id);
+            return await _context.Movies
+                .Include(m => m.Votes)
+                .FirstOrDefaultAsync(m => m.Id == id);
         }
 
         public async Task<bool> UpdateMovieAsync(Movie movie)

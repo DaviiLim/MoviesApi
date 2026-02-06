@@ -7,6 +7,6 @@ namespace MoviesApi.Interfaces.Mappers
     public interface IVoteMapping
     {
         public Vote CreateVoteRequestToEntity(CreateVoteRequest createVoteRequest);
-        public VoteResponse ToResponse(Vote vote, MovieResponse movieResponse);
+        public VoteResponse ToResponse(Vote vote, MovieDetailsResponse movieResponse);
     }
 }

@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace MoviesApi.DTOs.Auth
 {
-    // É preciso que ao adm criar um terceiro, seja possível que esse usuário criado consiga DEFINIR SUA SENHA APÓS O LOGIN!
+    // É preciso que o adm crie um terceiro. É necessário que esse usuário criado consiga DEFINIR SUA SENHA APÓS O LOGIN!
     public class AuthRegisterRequest
     {
         [Required]

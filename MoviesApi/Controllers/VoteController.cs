@@ -29,22 +29,6 @@ namespace MoviesApi.Controllers
             return Ok(await _voteService.VoteAsync(userId, createVoteRequest));
         }
 
-        [Authorize(Roles = "DefaultUser, Admin")]
-        [HttpGet]
-        [Route("{movieId}")]
-        public async Task<IActionResult> GetMovieScore(int movieId)
-        {
-            var userId = int.Parse(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            return Ok(await _voteService.GetMovieScore(userId, movieId));
-        }
-
-        [Authorize(Roles = "DefaultUser, Admin")]
-        [HttpGet]
-        public async Task<IActionResult> GetUserVotedMovies()
-        {
-            var userId = int.Parse(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            return Ok(await _voteService.GetUserVotedMovies(userId));
-        }
 
         [Authorize(Roles = "DefaultUser, Admin")]
         [HttpDelete]

@@ -1,5 +1,6 @@
 ﻿using Azure.Core;
 using MoviesApi.DTOs.Auth;
+using MoviesApi.Exceptions;
 using MoviesApi.Interfaces.Mappers;
 using MoviesApi.Interfaces.Repositories;
 using MoviesApi.Interfaces.Services;
@@ -23,10 +24,10 @@ namespace MoviesApi.Services
         public async Task<string> LoginAsync(AuthLoginRequest authLoginRequest)
         {
             var user = await _userRepository.GetUserByEmailAsync(authLoginRequest.Email);
-            if (user == null) throw new Exception("Email doesn't exist.");
+            if (user == null) throw new EmailNotFoundException();
 
             if (!BCrypt.Net.BCrypt.Verify(authLoginRequest.Password,user.Password))
-                throw new Exception("Email or Password is invalid");
+                throw new InvalidCredentialsException();
 
             var userJwt = _mapping.ToJwtEntity(user);
             var token = _tokenService.GenerateToken(userJwt);
@@ -37,10 +38,10 @@ namespace MoviesApi.Services
         {
             var user = await _userRepository.GetUserByEmailAsync(authRegisterRequest.Email);
 
-            if (user != null) throw new Exception("Email already exist."); 
+            if (user != null) throw new EmailAlreadyExistsException(); 
 
             if (authRegisterRequest.Password != authRegisterRequest.ConfirmPassword)
-                throw new Exception("Password and Confirm Password must match.");
+                throw new InvalidCredentialsException();
 
             string password = BCrypt.Net.BCrypt.HashPassword(authRegisterRequest.Password);
 

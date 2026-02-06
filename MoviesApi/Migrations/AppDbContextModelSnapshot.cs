@@ -54,8 +54,8 @@ namespace MoviesApi.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime>("ReleasedYear")
-                        .HasColumnType("datetime(6)");
+                    b.Property<int>("ReleasedYear")
+                        .HasColumnType("int");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -152,7 +152,7 @@ namespace MoviesApi.Migrations
             modelBuilder.Entity("MoviesApi.Entities.Vote", b =>
                 {
                     b.HasOne("MoviesApi.Entities.Movie", "Movie")
-                        .WithMany("Votos")
+                        .WithMany("Votes")
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -170,7 +170,7 @@ namespace MoviesApi.Migrations
 
             modelBuilder.Entity("MoviesApi.Entities.Movie", b =>
                 {
-                    b.Navigation("Votos");
+                    b.Navigation("Votes");
                 });
 
             modelBuilder.Entity("MoviesApi.Entities.User", b =>

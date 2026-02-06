@@ -24,12 +24,10 @@ public class AppDbContext : DbContext
         {
             v.HasKey(v => v.Id);
 
-            v.HasQueryFilter(v => v.Movie.Status == MovieStatus.Online);
-            v.HasQueryFilter(v => v.User.Status == UserStatus.Ativo);
-            v.HasQueryFilter(v => v.User.Role == UserRole.Admin);
+            v.HasQueryFilter(v => v.Movie.Status == MovieStatus.Online && v.User.Status == UserStatus.Ativo);
 
             v.HasOne(v => v.Movie)
-                .WithMany(m => m.Votos)
+                .WithMany(m => m.Votes)
                 .HasForeignKey(v => v.MovieId)
                 .OnDelete(DeleteBehavior.Cascade);
 

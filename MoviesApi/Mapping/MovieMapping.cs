@@ -26,9 +26,20 @@ namespace MoviesApi.Mapping
             };
         }
 
-        public MovieResponse ToResponse(Movie movie)
+        public MovieTitleResponse ToMovieTitleResponse(Movie movie, float avarageScore, float totalVotes)
         {
-            return new MovieResponse
+            return new MovieTitleResponse
+            {
+                Id = movie.Id,
+                Title = movie.Title,
+                AvarageScore = avarageScore,
+                TotalVotes = totalVotes
+            };
+        }
+
+        public MovieDetailsResponse ToDetailsResponse(Movie movie, float avarageScore, float totalVotes)
+        {
+            return new MovieDetailsResponse
             {
                 Id = movie.Id,
                 Title = movie.Title,
@@ -38,7 +49,9 @@ namespace MoviesApi.Mapping
                 Duration = movie.Duration,
                 Cast = movie.Cast,
                 Directors = movie.Directors,
-                ReleasedYear = movie.ReleasedYear
+                ReleasedYear = movie.ReleasedYear,
+                AvarageScore = avarageScore,
+                TotalVotes = totalVotes
             };
         }
     }

@@ -17,7 +17,7 @@ namespace MoviesApi.Mapping
             };
         }
 
-        public VoteResponse ToResponse(Vote vote, MovieResponse movieResponse)
+        public VoteResponse ToResponse(Vote vote, MovieDetailsResponse movieResponse)
         {
             return new VoteResponse
             {

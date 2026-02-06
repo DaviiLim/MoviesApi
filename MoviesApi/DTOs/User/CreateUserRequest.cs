@@ -7,15 +7,19 @@ namespace MoviesApi.DTOs.User
     public class CreateUserRequest
     {
         [Required]
+        [StringLength(100, MinimumLength = 3)]
         public string Name { get; set; }
 
         [Required]
         [EmailAddress]
+        [StringLength(150)]
         public string Email { get; set; }
 
-        public UserRole Role { get; set; }
+        [Required]
+        [StringLength(100, MinimumLength = 6)]
+        public string Password { get; set; }
 
-        public string Password { get; set; }                                // reavalair
+        public UserRole Role { get; set; }
 
     }
 }

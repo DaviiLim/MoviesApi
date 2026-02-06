@@ -21,13 +21,6 @@ namespace MoviesApi.Repositories
             return vote;
         }
 
-        public async Task<IEnumerable<Vote>> GetAllVotesAsync()
-        {
-            return await _context.Votes
-            .Include(v => v.Movie)
-            .ToListAsync();
-        }
-
         public async Task<Vote?> GetVoteByIdAsync(int id)
         {
             return await _context.Votes.FindAsync(id); ;

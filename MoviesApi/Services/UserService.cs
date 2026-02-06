@@ -1,5 +1,6 @@
 ﻿using MoviesApi.DTOs.User;
 using MoviesApi.Enums.User;
+using MoviesApi.Exceptions;
 using MoviesApi.Interfaces.Mappers;
 using MoviesApi.Interfaces.Repositories;
 using MoviesApi.Interfaces.Services;
@@ -22,7 +23,7 @@ namespace MoviesApi.Services
         {
             var userEmail = await _userRepository.GetUserByEmailAsync(createUserRequest.Email);
 
-            if (userEmail != null) throw new Exception("Email already exist.");
+            if (userEmail != null) throw new EmailAlreadyExistsException();
 
             string password = BCrypt.Net.BCrypt.HashPassword(createUserRequest.Password);
 
@@ -43,7 +44,7 @@ namespace MoviesApi.Services
         public async Task<UserResponse> GetUserByIdAsync(int id)
         {
             var userResponse = await _userRepository.GetUserByIdAsync(id);
-            if (userResponse == null) throw new BadHttpRequestException("User not Found");
+            if (userResponse == null) throw new UserNotFoundException();
             return _mapping.ToResponse(userResponse);
         }
 
@@ -51,7 +52,7 @@ namespace MoviesApi.Services
         public async Task<UserResponse> GetUserByEmailAsync(string email)
         {
             var user = await _userRepository.GetUserByEmailAsync(email);
-            if (user == null) throw new BadHttpRequestException("User not Found");
+            if (user == null) throw new UserNotFoundException();
 
             return _mapping.ToResponse(user);
         }
@@ -61,7 +62,7 @@ namespace MoviesApi.Services
         {
             var user = await _userRepository.GetUserByIdAsync(id);
 
-            if (user == null) throw new BadHttpRequestException("User not Found");
+            if (user == null) throw new UserNotFoundException();
 
             user.Name = updateUser.Name;
 
@@ -75,7 +76,7 @@ namespace MoviesApi.Services
         {
             var user = await _userRepository.GetUserByIdAsync(id);
 
-            if (user == null) throw new BadHttpRequestException("User not Found");
+            if (user == null) new UserNotFoundException();
 
             user.Status = UserStatus.Inativo;
 

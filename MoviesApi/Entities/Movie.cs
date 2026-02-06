@@ -14,11 +14,11 @@ namespace MoviesApi.Entities
         public List<string> Directors { get; set; }
         public MovieStatus Status { get; set; }
 
-        public DateTime ReleasedYear { get; set; }
+        public int ReleasedYear { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
 
-        public ICollection<Vote> Votos { get; }
+        public ICollection<Vote> Votes { get; }
     }
 }

@@ -1,0 +1,53 @@
+﻿using MoviesApi.Exceptions;
+using System.Net;
+using System.Text.Json;
+
+namespace MoviesApi.Middleware
+{
+    public class ExceptionMiddleware
+    {
+        private readonly RequestDelegate _next;
+
+        public ExceptionMiddleware(RequestDelegate next)
+        {
+            _next = next;
+        }
+
+        public async Task InvokeAsync(HttpContext context)
+        {
+            try
+            {
+                await _next(context);
+            }
+            catch (Exception ex)
+            {
+                await HandleAsync(context, ex);
+            }
+        }
+
+        private static Task HandleAsync(HttpContext context, Exception ex)
+        {
+            var statusCode = ex switch
+            {
+                EmailNotFoundException => HttpStatusCode.NotFound,
+                MovieNotFoundException => HttpStatusCode.NotFound,
+                EmailAlreadyExistsException => HttpStatusCode.Conflict,
+                InvalidCredentialsException => HttpStatusCode.Unauthorized,
+                BusinessException => HttpStatusCode.BadRequest,
+                _ => HttpStatusCode.InternalServerError
+            };
+
+            var response = new
+            {
+                error = ex.Message
+            };
+
+            context.Response.StatusCode = (int)statusCode;
+            context.Response.ContentType = "application/json";
+
+            return context.Response.WriteAsync(
+                JsonSerializer.Serialize(response)
+            );
+        }
+    }
+}

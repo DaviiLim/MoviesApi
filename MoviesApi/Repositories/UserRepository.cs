@@ -23,7 +23,10 @@ namespace MoviesApi.Repositories
 
         public async Task<IEnumerable<User>> GetAllUsersAsync()
         {
-            return await _context.Users.OrderBy(u => u.Name).ToListAsync();
+            return await _context.Users
+                .OrderBy(u => u.Name)
+                .Where(u => u.Role != Enums.User.UserRole.Admin)
+                .ToListAsync();
         }
 
         public async Task<User?> GetUserByIdAsync(int id)
