@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MoviesApi.DTOs.Pagination;
 using MoviesApi.DTOs.User;
 using MoviesApi.Interfaces.Services;
 
@@ -33,9 +34,11 @@ namespace MoviesApi.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpGet]
-        public async Task<IActionResult> GetAllUsersAsync()
+        public async Task<IActionResult> GetAllUsersAsync(
+            [FromQuery] PaginationParams paginationParams
+            )
         {
-            return Ok(await _userService.GetAllUsersAsync());
+            return Ok(await _userService.GetAllUsersAsync(paginationParams));
         }
 
         [Authorize(Roles = "Admin")]

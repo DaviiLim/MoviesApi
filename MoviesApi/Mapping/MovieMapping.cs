@@ -32,6 +32,9 @@ namespace MoviesApi.Mapping
             {
                 Id = movie.Id,
                 Title = movie.Title,
+                Cast = movie.Cast,
+                Directors = movie.Directors,
+                Genres = movie.Genres,
                 AvarageScore = avarageScore,
                 TotalVotes = totalVotes
             };

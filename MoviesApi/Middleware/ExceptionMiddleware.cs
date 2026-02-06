@@ -30,9 +30,12 @@ namespace MoviesApi.Middleware
             var statusCode = ex switch
             {
                 EmailNotFoundException => HttpStatusCode.NotFound,
-                MovieNotFoundException => HttpStatusCode.NotFound,
                 EmailAlreadyExistsException => HttpStatusCode.Conflict,
+                MovieNotFoundException => HttpStatusCode.NotFound,
+                TitleAlreadyExistsException => HttpStatusCode.Conflict,
                 InvalidCredentialsException => HttpStatusCode.Unauthorized,
+                ForbiddenUserVoteException => HttpStatusCode.Forbidden,
+
                 BusinessException => HttpStatusCode.BadRequest,
                 _ => HttpStatusCode.InternalServerError
             };

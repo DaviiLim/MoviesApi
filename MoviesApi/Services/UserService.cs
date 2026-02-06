@@ -1,4 +1,6 @@
-﻿using MoviesApi.DTOs.User;
+﻿using MoviesApi.DTOs.Movie;
+using MoviesApi.DTOs.Pagination;
+using MoviesApi.DTOs.User;
 using MoviesApi.Enums.User;
 using MoviesApi.Exceptions;
 using MoviesApi.Interfaces.Mappers;
@@ -34,11 +36,30 @@ namespace MoviesApi.Services
             return _mapping.ToResponse(user);
         }
 
-        public async Task<IEnumerable<UserResponse>> GetAllUsersAsync()
+        public async Task<PaginationResponse<UserResponse>> GetAllUsersAsync(PaginationParams paginationParams)
         {
             var users = await _userRepository.GetAllUsersAsync();
-            var usersResponse = users.Select(users => _mapping.ToResponse(users));
-            return usersResponse;
+            var query = users.AsQueryable();
+
+            var totalItems = query.Count();
+
+            query = query
+                .OrderBy(u => u.Name);
+
+            var pagedUsers = query
+                .Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)
+                .Take(paginationParams.PageSize)
+                .ToList();
+
+            var items = pagedUsers.Select(u => _mapping.ToResponse(u));
+
+            return new PaginationResponse<UserResponse>
+            {
+                Items = items,
+                TotalItems = totalItems,
+                PageNumber = paginationParams.PageNumber,
+                PageSize = paginationParams.PageSize
+            };
         }
 
         public async Task<UserResponse> GetUserByIdAsync(int id)

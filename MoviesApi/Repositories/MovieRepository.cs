@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MoviesApi.Entities;
 using MoviesApi.Interfaces.Repositories;
+using System.Reflection.Metadata.Ecma335;
 
 namespace MoviesApi.Repositories
 {
@@ -24,8 +25,6 @@ namespace MoviesApi.Repositories
         {
             return await _context.Movies
                 .Include(m => m.Votes)
-                .OrderByDescending(m => m.Votes.Count())
-                .ThenBy(m => m.Title)
                 .ToListAsync();
         }
 
@@ -34,6 +33,11 @@ namespace MoviesApi.Repositories
             return await _context.Movies
                 .Include(m => m.Votes)
                 .FirstOrDefaultAsync(m => m.Id == id);
+        }
+
+        public async Task<Movie?> GetMovieByTitleAsync(string title)
+        {
+            return await _context.Movies.FirstOrDefaultAsync(m => m.Title == title);
         }
 
         public async Task<bool> UpdateMovieAsync(Movie movie)
