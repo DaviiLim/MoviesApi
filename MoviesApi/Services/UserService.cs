@@ -20,7 +20,7 @@ namespace MoviesApi.Services
             _mapping = mapping;
         }
 
-        //    ---------- testes
+        //    ---------- Para adms criarem usuários
         public async Task<UserResponse> CreateUserAsync(CreateUserRequest createUserRequest)
         {
             var userEmail = await _userRepository.GetUserByEmailAsync(createUserRequest.Email);
@@ -78,7 +78,6 @@ namespace MoviesApi.Services
             return _mapping.ToResponse(user);
         }
 
-        //Reavaliar
         public async Task<bool> UpdateUserAsync(int id, UpdateUser updateUser)
         {
             var user = await _userRepository.GetUserByIdAsync(id);
@@ -92,16 +91,15 @@ namespace MoviesApi.Services
             return true;
         }
 
-        //Fazer
         public async Task<bool> DeleteUserAsync(int id)
         {
             var user = await _userRepository.GetUserByIdAsync(id);
 
-            if (user == null) new UserNotFoundException();
+            if (user == null) throw new UserNotFoundException();
 
             user.Status = UserStatus.Inativo;
 
-            await _userRepository.UpdateUserAsync(user);
+            await _userRepository.DeleteUserAsync(user);
 
             return true;
         }

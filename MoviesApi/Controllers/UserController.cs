@@ -43,10 +43,10 @@ namespace MoviesApi.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpGet]
-        [Route("email/{id}")]
-        public async Task<IActionResult> GetUserByEmailAsync(int id)
+        [Route("email/")]
+        public async Task<IActionResult> GetUserByEmailAsync(string email)
         {
-            return Ok(await _userService.GetUserByIdAsync(id));
+            return Ok(await _userService.GetUserByEmailAsync(email));
         }
 
         [Authorize(Roles = "Admin")]

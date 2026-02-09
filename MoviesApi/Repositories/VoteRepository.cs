@@ -13,12 +13,12 @@ namespace MoviesApi.Repositories
             _context = context;
         }
 
-        public async Task<Vote> VoteAsync(Vote vote)
+        public async Task<bool> VoteAsync(Vote vote)
         {
             await _context.Votes.AddAsync(vote);
             await _context.SaveChangesAsync();
 
-            return vote;
+            return true;
         }
 
         public async Task<Vote?> GetVoteByIdAsync(int id)

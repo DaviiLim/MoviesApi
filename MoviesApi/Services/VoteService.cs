@@ -20,11 +20,6 @@ namespace MoviesApi.Services
             _mapping = mapping;
         }
 
-        public VoteService(IVoteRepository voteRepository)
-        {
-            _voteRepository = voteRepository;
-        }
-
         public async Task<bool> VoteAsync(int userId, CreateVoteRequest createVoteRequest)
         {
             var user = await _userRepository.GetUserByIdAsync(userId);

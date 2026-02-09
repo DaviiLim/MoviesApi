@@ -1,12 +1,12 @@
 ﻿using MoviesApi.DTOs.Movie;
 using MoviesApi.DTOs.Pagination;
+using MoviesApi.Entities;
 using MoviesApi.Enums.Movie;
 using MoviesApi.Exceptions;
 using MoviesApi.Interfaces.Mappers;
 using MoviesApi.Interfaces.Repositories;
 using MoviesApi.Interfaces.Services;
 using System.Data;
-using System.IO;
 
 namespace MoviesApi.Services
 {
@@ -24,7 +24,7 @@ namespace MoviesApi.Services
         public async Task<MovieDetailsResponse> CreateMovieAsync(CreateMovieRequest createMovieRequest)
         {
             var movieByTitle = await _movieRepository.GetMovieByTitleAsync(createMovieRequest.Title);
-            if (createMovieRequest.Title.Equals(movieByTitle.Title))
+            if (movieByTitle != null)
                 throw new TitleAlreadyExistsException();
 
             var movie = _mapping.CreateMovieRequestToEntity(createMovieRequest);
@@ -97,13 +97,21 @@ namespace MoviesApi.Services
         public async Task<MovieDetailsResponse> GetMovieByIdAsync(int id)
         {
             var movie = await _movieRepository.GetMovieByIdAsync(id);
-            if (movie == null) throw new MovieNotFoundException();
 
-            var avarageScore = movie.Votes.Any() ? movie.Votes.Average(m => m.Score) : 0;
-            var totalVotes = movie.Votes.Sum(m => m.Score);
+            if (movie == null)
+                throw new MovieNotFoundException();
 
-            return _mapping.ToDetailsResponse(movie, avarageScore, totalVotes);
+            var votes = movie.Votes ?? new List<Vote>();
+
+            var averageScore = votes.Any()
+                ? votes.Average(v => v.Score)
+                : 0;
+
+            var totalVotes = votes.Sum(v => v.Score);
+
+            return _mapping.ToDetailsResponse(movie, averageScore, totalVotes);
         }
+
 
         public async Task<bool> UpdateMovieAsync(int id, UpdateMovie updateMovie)
         {
@@ -133,7 +141,7 @@ namespace MoviesApi.Services
 
             movie.Status = MovieStatus.Offline;
             movie.DeletedAt = DateTime.Now;
-            await _movieRepository.UpdateMovieAsync(movie);
+            await _movieRepository.DeleteMovieAsync(movie);
 
             return true;
         }
