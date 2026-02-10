@@ -7,20 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Enums\NovaPasta1\**" />
-    <Compile Remove="Enums\NovaPasta\**" />
     <Compile Remove="NovaPasta1\**" />
     <Compile Remove="NovaPasta\**" />
-    <Content Remove="Enums\NovaPasta1\**" />
-    <Content Remove="Enums\NovaPasta\**" />
     <Content Remove="NovaPasta1\**" />
     <Content Remove="NovaPasta\**" />
-    <EmbeddedResource Remove="Enums\NovaPasta1\**" />
-    <EmbeddedResource Remove="Enums\NovaPasta\**" />
     <EmbeddedResource Remove="NovaPasta1\**" />
     <EmbeddedResource Remove="NovaPasta\**" />
-    <None Remove="Enums\NovaPasta1\**" />
-    <None Remove="Enums\NovaPasta\**" />
     <None Remove="NovaPasta1\**" />
     <None Remove="NovaPasta\**" />
   </ItemGroup>
@@ -35,6 +27,11 @@
     </PackageReference>
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Application\Application.csproj" />
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

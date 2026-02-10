@@ -1,6 +1,4 @@
-﻿using MoviesApi.DTOs.Auth;
-using MoviesApi.DTOs.User;
-using MoviesApi.Entities;
+﻿using MoviesApi.Entities;
 
 namespace MoviesApi.Interfaces.Repositories
 {

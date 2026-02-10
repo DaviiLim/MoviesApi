@@ -1,10 +1,8 @@
-﻿using Azure.Core;
-using MoviesApi.DTOs.Auth;
+﻿using MoviesApi.DTOs.Auth;
 using MoviesApi.Exceptions;
 using MoviesApi.Interfaces.Mappers;
 using MoviesApi.Interfaces.Repositories;
 using MoviesApi.Interfaces.Services;
-using MoviesApi.Mapping;
 
 namespace MoviesApi.Services
 {

@@ -1,5 +1,4 @@
-﻿using MoviesApi.DTOs.Movie;
-using MoviesApi.Entities;
+﻿using MoviesApi.Entities;
 
 namespace MoviesApi.Interfaces.Repositories
 {

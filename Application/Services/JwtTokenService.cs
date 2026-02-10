@@ -1,14 +1,12 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using MoviesApi.DTOs.User;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using MoviesApi.DTOs.User.Jwt;
-using MoviesApi.Entities;
 using MoviesApi.Interfaces.Services;
 using System.IdentityModel.Tokens.Jwt;
-using System.Runtime;
 using System.Security.Claims;
 using System.Text;
 
-namespace MoviesApi.Services
+namespace Application.Services
 {
     public class JwtTokenService : IJwtTokenService
     {
