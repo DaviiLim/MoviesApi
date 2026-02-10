@@ -1,4 +1,6 @@
 ﻿using MoviesApi.DTOs.Vote;
+using MoviesApi.Entities;
+using MoviesApi.Enums.Vote;
 using MoviesApi.Exceptions;
 using MoviesApi.Interfaces.Mappers;
 using MoviesApi.Interfaces.Repositories;
@@ -20,32 +22,54 @@ namespace MoviesApi.Services
             _mapping = mapping;
         }
 
-        public async Task<bool> VoteAsync(int userId, CreateVoteRequest createVoteRequest)
+        public async Task<bool> VoteAsync(int userId, CreateVoteRequest request)
         {
-            var user = await _userRepository.GetUserByIdAsync(userId);
-            if (user == null) throw new UserNotFoundException();
+            var user = await _userRepository.GetUserByIdAsync(userId)
+                ?? throw new UserNotFoundException();
 
-            var movie = await _movieRepository.GetMovieByIdAsync(createVoteRequest.MovieId);
-            if (movie == null) throw new MovieNotFoundException();
+            var movie = await _movieRepository.GetMovieByIdAsync(request.MovieId)
+                ?? throw new MovieNotFoundException();
 
-            var vote = _mapping.CreateVoteRequestToEntity(createVoteRequest);
-            vote.UserId = userId;
+            var existingVote = await _voteRepository
+                .ExistsVoteAsync(userId, movie.Id);
 
-            await _voteRepository.VoteAsync(vote);
+            if (existingVote != null)
+            {
+                existingVote.Score = request.Score;
+                existingVote.Status = VoteStatus.Active;
+            }
+            else
+            {
+                var vote = _mapping.CreateVoteRequestToEntity(request);
+                vote.UserId = userId;
+                vote.Status = VoteStatus.Active;
 
+                await _voteRepository.AddAsync(vote);
+            }
+
+            await _voteRepository.SaveChangesAsync();
             return true;
         }
 
-        public async Task<bool> DeleteVoteAsync(int userId,int voteId)
+        public async Task<bool> DeleteVoteAsync(int userId,int movieId)
         {
             var user = await _userRepository.GetUserByIdAsync(userId);
             if (user == null) throw new UserNotFoundException();
 
-            var vote = await _voteRepository.GetVoteByIdAsync(voteId);
+            var movie = await _movieRepository.GetMovieByIdAsync(movieId);
+            if (movie == null) throw new MovieNotFoundException();
 
-            if (vote.UserId != userId) throw new ForbiddenUserVoteException();
+            var votes = await _voteRepository.GetAllVotesAsync();
 
-            vote.DeletedAt = DateTime.Now;
+            var userVotedMovie = votes.FirstOrDefault(v => v.MovieId == movieId && v.UserId == userId);
+
+            if (userVotedMovie == null) throw new UserHasNotVotedForMovieException();
+
+            userVotedMovie.Status = VoteStatus.Inactive;
+            userVotedMovie.DeletedAt = DateTime.Now;
+
+            await _voteRepository.DeleteVoteAsync(userVotedMovie);
+
             return true;
 
 

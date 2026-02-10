@@ -3,7 +3,6 @@ using MoviesApi.DTOs.User;
 using MoviesApi.Entities;
 using MoviesApi.Exceptions;
 using MoviesApi.Interfaces.Repositories;
-using MoviesApi.Interfaces.Services;
 using MoviesApi.Mapping;
 using MoviesApi.Services;
 
@@ -25,7 +24,7 @@ namespace MovieApiTest
         [Fact]
         public async Task CreateUserAsync_EmailAlreadyExists_ShouldThrowEmailAlreadyExistsException()
         {
-            var createUserRequest = new MoviesApi.DTOs.User.CreateUserRequest
+            var createUserRequest = new CreateUserRequest
             {
                 Name = "string",
                 Email = "user@example.com",
@@ -53,7 +52,7 @@ namespace MovieApiTest
         [Fact]
         public async Task CreateUserAsync_WhenEmailDoesntExist_ShouldReturnUserResponse()
         {
-            var createUserRequest = new MoviesApi.DTOs.User.CreateUserRequest
+            var createUserRequest = new CreateUserRequest
             {
                 Name = "userName2",
                 Email = "userEmai2@example.com",
@@ -61,7 +60,7 @@ namespace MovieApiTest
                 Role = 0
             };
 
-            var user = new MoviesApi.Entities.User
+            var user = new User
             {
                 Id = 1,
                 Name = "userName2",
@@ -83,7 +82,7 @@ namespace MovieApiTest
             var result = await _userService.CreateUserAsync(createUserRequest);
 
             Assert.NotNull(result);
-            Assert.IsType<MoviesApi.DTOs.User.UserResponse>(result);
+            Assert.IsType<UserResponse>(result);
             Assert.Equal(createUserRequest.Name, result.Name);
             Assert.Equal(createUserRequest.Email, result.Email);
 
@@ -93,7 +92,7 @@ namespace MovieApiTest
         [Fact]
         public async Task GetUserByIdAsync_WhenUserExists_ShouldReturnUser()
         {
-            var user = new MoviesApi.Entities.User
+            var user = new User
             {
                 Id = 1,
                 Name = "userNameUpdated",
@@ -118,7 +117,7 @@ namespace MovieApiTest
         [Fact]
         public async Task GetUserByIdAsync_WhenUserDoesntExists_ShouldReturnUserNotFoundException()
         {
-            var user = new MoviesApi.Entities.User
+            var user = new User
             {
                 Id = 1,
                 Name = "userNameUpdated",
@@ -145,7 +144,7 @@ namespace MovieApiTest
         [Fact]
         public async Task UpdateUserAsync_WhenUserExists_ShouldReturnTrue()
         {
-            var user = new MoviesApi.Entities.User
+            var user = new User
             {
                 Id = 1,
                 Name = "userNameUpdated",
@@ -156,7 +155,7 @@ namespace MovieApiTest
                 DeletedAt = null
             };
 
-            var userUpdate = new MoviesApi.DTOs.User.UpdateUser
+            var userUpdate = new UpdateUser
             {
                 Name = "userNameUpdated"
             };
@@ -165,19 +164,24 @@ namespace MovieApiTest
                 .Setup(r => r.GetUserByIdAsync(user.Id))
                 .ReturnsAsync(user);
 
-            _userRepositoryMock.Setup(r => r.UpdateUserAsync(user)).ReturnsAsync(true);
+            _userRepositoryMock
+                .Setup(r => r.UpdateUserAsync(It.IsAny<User>()))
+                .ReturnsAsync(true);
 
             var result = await _userService.UpdateUserAsync(user.Id, userUpdate);
-            Assert.IsType<bool>(result);
+
             Assert.True(result);
 
-            _userRepositoryMock.Verify(r => r.UpdateUserAsync(It.IsAny<User>()), Times.Once);
+            _userRepositoryMock.Verify(
+                r => r.UpdateUserAsync(It.IsAny<User>()),
+                Times.Once);
         }
+
 
         [Fact]
         public async Task UpdateUserAsync_WhenUserDoesntExists_ShouldReturnUserNotFoundException()
         {
-            var user = new MoviesApi.Entities.User
+            var user = new User
             {
                 Id = 1,
                 Name = "userNameUpdated",
@@ -188,7 +192,7 @@ namespace MovieApiTest
                 DeletedAt = null
             };
 
-            var userUpdate = new MoviesApi.DTOs.User.UpdateUser
+            var userUpdate = new UpdateUser
             {
                 Name = "userNameUpdated"
             };
@@ -225,16 +229,18 @@ namespace MovieApiTest
                 .ReturnsAsync(user);
 
             _userRepositoryMock
-                .Setup(r => r.DeleteUserAsync(user))
+                .Setup(r => r.DeleteUserAsync(It.IsAny<User>()))
                 .ReturnsAsync(true);
 
             var result = await _userService.DeleteUserAsync(user.Id);
-            Assert.IsType<bool>(result);
+
             Assert.True(result);
 
-            _userRepositoryMock.Verify(r => 
-            r.DeleteUserAsync(It.IsAny<User>()), Times.Once);
+            _userRepositoryMock.Verify(
+                r => r.DeleteUserAsync(It.IsAny<User>()),
+                Times.Once);
         }
+
 
         [Fact]
         public async Task DeleteUserAsync_WhenUserDoesntExists_ShouldReturnUserNotFoundException()

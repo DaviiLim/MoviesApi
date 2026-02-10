@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MoviesApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260206132008_AddTables")]
+    [Migration("20260210133728_AddTables")]
     partial class AddTables
     {
         /// <inheritdoc />
@@ -138,6 +138,9 @@ namespace MoviesApi.Migrations
 
                     b.Property<float>("Score")
                         .HasColumnType("float");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");

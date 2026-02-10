@@ -35,6 +35,7 @@ namespace MoviesApi.Middleware
                 TitleAlreadyExistsException => HttpStatusCode.Conflict,
                 InvalidCredentialsException => HttpStatusCode.Unauthorized,
                 ForbiddenUserVoteException => HttpStatusCode.Forbidden,
+                UserHasNotVotedForMovieException => HttpStatusCode.BadRequest,
 
                 BusinessException => HttpStatusCode.BadRequest,
                 _ => HttpStatusCode.InternalServerError

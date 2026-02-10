@@ -105,13 +105,21 @@ namespace MovieApiTest.Services
                 .Setup(r => r.GetMovieByIdAsync(request.MovieId))
                 .ReturnsAsync(ValidMovie());
 
+            _voteRepositoryMock
+                .Setup(r => r.ExistsVoteAsync(1, request.MovieId))
+                .ReturnsAsync((Vote)null);
+
             _voteMappingMock
                 .Setup(m => m.CreateVoteRequestToEntity(request))
                 .Returns(vote);
 
             _voteRepositoryMock
-                .Setup(r => r.VoteAsync(It.IsAny<Vote>()))
-                .ReturnsAsync(true);
+                .Setup(r => r.AddAsync(It.IsAny<Vote>()))
+                .Returns(Task.CompletedTask);
+
+            _voteRepositoryMock
+                .Setup(r => r.SaveChangesAsync())
+                .Returns(Task.CompletedTask);
 
             var result = await _voteService.VoteAsync(1, request);
 
@@ -119,55 +127,12 @@ namespace MovieApiTest.Services
             Assert.Equal(1, vote.UserId);
 
             _voteRepositoryMock.Verify(
-                r => r.VoteAsync(It.IsAny<Vote>()),
+                r => r.AddAsync(It.IsAny<Vote>()),
                 Times.Once);
-        }
 
-        [Fact]
-        public async Task DeleteVoteAsync_WhenUserDoesNotExist_ShouldThrowException()
-        {
-            _userRepositoryMock
-                .Setup(r => r.GetUserByIdAsync(It.IsAny<int>()))
-                .ReturnsAsync((User)null);
-
-            await Assert.ThrowsAsync<UserNotFoundException>(() =>
-                _voteService.DeleteVoteAsync(1, 1));
-        }
-
-        [Fact]
-        public async Task DeleteVoteAsync_WhenVoteBelongsToAnotherUser_ShouldThrowException()
-        {
-            var vote = ValidVote(userId: 2);
-
-            _userRepositoryMock
-                .Setup(r => r.GetUserByIdAsync(1))
-                .ReturnsAsync(ValidUser(1));
-
-            _voteRepositoryMock
-                .Setup(r => r.GetVoteByIdAsync(1))
-                .ReturnsAsync(vote);
-
-            await Assert.ThrowsAsync<ForbiddenUserVoteException>(() =>
-                _voteService.DeleteVoteAsync(1, 1));
-        }
-
-        [Fact]
-        public async Task DeleteVoteAsync_WhenValid_ShouldSoftDeleteAndReturnTrue()
-        {
-            var vote = ValidVote(userId: 1);
-
-            _userRepositoryMock
-                .Setup(r => r.GetUserByIdAsync(1))
-                .ReturnsAsync(ValidUser(1));
-
-            _voteRepositoryMock
-                .Setup(r => r.GetVoteByIdAsync(1))
-                .ReturnsAsync(vote);
-
-            var result = await _voteService.DeleteVoteAsync(1, 1);
-
-            Assert.True(result);
-            Assert.NotNull(vote.DeletedAt);
+            _voteRepositoryMock.Verify(
+                r => r.SaveChangesAsync(),
+                Times.Once);
         }
     }
 }

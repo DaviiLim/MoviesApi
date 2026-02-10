@@ -13,17 +13,33 @@ namespace MoviesApi.Repositories
             _context = context;
         }
 
-        public async Task<bool> VoteAsync(Vote vote)
+        public async Task AddAsync(Vote vote)
         {
             await _context.Votes.AddAsync(vote);
-            await _context.SaveChangesAsync();
+        }
 
-            return true;
+        public async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<Vote>> GetAllVotesAsync()
+        {
+            return await _context.Votes.ToListAsync();
         }
 
         public async Task<Vote?> GetVoteByIdAsync(int id)
         {
             return await _context.Votes.FindAsync(id); ;
+        }
+
+        public async Task<Vote?> ExistsVoteAsync(int userId, int movieId)
+        {
+            return await _context.Votes
+                .IgnoreQueryFilters() 
+                .FirstOrDefaultAsync(v =>
+                    v.UserId == userId &&
+                    v.MovieId == movieId);
         }
 
         public async Task<bool> DeleteVoteAsync(Vote vote)

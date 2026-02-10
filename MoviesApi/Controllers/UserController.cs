@@ -17,7 +17,7 @@ namespace MoviesApi.Controllers
             _userService = userService;
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateUserAsync(CreateUserRequest createUserRequest)
         {

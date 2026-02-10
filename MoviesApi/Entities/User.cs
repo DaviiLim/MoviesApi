@@ -15,6 +15,6 @@ namespace MoviesApi.Entities
         public DateTime? UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
 
-        public ICollection<Vote> Votos { get; }
+        public ICollection<Vote> Votes { get; }
     }
 }

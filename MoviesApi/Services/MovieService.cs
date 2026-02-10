@@ -15,6 +15,7 @@ namespace MoviesApi.Services
         private readonly IMovieRepository _movieRepository;
         private readonly IMovieMapping _mapping;
 
+
         public MovieService(IMovieRepository movieRepository, IMovieMapping movieMapping)
         {
             _movieRepository = movieRepository;
@@ -107,11 +108,28 @@ namespace MoviesApi.Services
                 ? votes.Average(v => v.Score)
                 : 0;
 
-            var totalVotes = votes.Sum(v => v.Score);
+            var totalVotes = votes.Count();
 
             return _mapping.ToDetailsResponse(movie, averageScore, totalVotes);
         }
 
+        public async Task<IEnumerable<MovieTitleResponse>> GetAllUserMovies(int userId) 
+        {
+            var movies = await _movieRepository.GetAllMoviesVotedByUser(userId);
+            var movieTitleResponse = movies.Select(m =>
+            {
+                var votes = m.Votes ?? new List<Vote>();
+
+                var averageScore = votes.Any()
+                    ? votes.Average(v => v.Score)
+                    : 0;
+
+                var totalVotes = votes.Count();
+
+                return _mapping.ToMovieTitleResponse(m, averageScore, totalVotes);
+            });
+                return movieTitleResponse;
+        }
 
         public async Task<bool> UpdateMovieAsync(int id, UpdateMovie updateMovie)
         {

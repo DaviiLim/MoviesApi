@@ -6,18 +6,22 @@ using MoviesApi.DTOs.Pagination;
 using MoviesApi.DTOs.User;
 using MoviesApi.Interfaces.Services;
 using MoviesApi.Services;
+using System.Security.Claims;
 
 namespace MoviesApi.Controllers
 {
+
     [ApiController]
     [Route("api/[controller]")]
     public class MovieController : ControllerBase
     {
         private readonly IMovieService _movieService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public MovieController(IMovieService movieService)
+        public MovieController(IMovieService movieService, IHttpContextAccessor httpContextAccessor)
         {
             _movieService = movieService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         [Authorize(Roles = "Admin")]
@@ -41,6 +45,15 @@ namespace MoviesApi.Controllers
         {
 
             return Ok(await _movieService.GetAllMovieAsync(paginationParams,title, genre, directors, cast));
+        }
+
+        [Authorize(Roles = "DefaultUser, Admin")]
+        [HttpGet]
+        [Route("MyList/")]
+        public async Task<IActionResult> GetAllUserMovies()
+        {
+            var userId = int.Parse(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            return Ok(await _movieService.GetAllUserMovies(userId));
         }
 
         [Authorize(Roles = "Admin")]

@@ -132,7 +132,7 @@ public class MovieServiceTests
     }
 
     [Fact]
-    public async Task DeleteUserAsync_WhenUserExists_ShouldReturnMovieTrue()
+    public async Task DeleteMovieAsync_WhenMovieExists_ShouldReturnMovieTrue()
     {
         var movie = CreateMovieEntity();
 

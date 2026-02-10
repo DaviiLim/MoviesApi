@@ -97,7 +97,7 @@ namespace MoviesApi.Services
 
             if (user == null) throw new UserNotFoundException();
 
-            user.Status = UserStatus.Inativo;
+            user.Status = UserStatus.Inactive;
 
             await _userRepository.DeleteUserAsync(user);
 

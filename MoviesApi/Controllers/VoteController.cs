@@ -32,11 +32,11 @@ namespace MoviesApi.Controllers
 
         [Authorize(Roles = "DefaultUser, Admin")]
         [HttpDelete]
-        [Route("{id}")]
-        public async Task<IActionResult> DeleteVoteAsync(int id)
+        [Route("{movieId}")]
+        public async Task<IActionResult> DeleteVoteAsync(int movieId)
         {
             var userId = int.Parse(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            return Ok(await _voteService.DeleteVoteAsync(userId,id));
+            return Ok(await _voteService.DeleteVoteAsync(userId, movieId));
         }
 
     }

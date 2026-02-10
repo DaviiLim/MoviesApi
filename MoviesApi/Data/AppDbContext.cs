@@ -2,6 +2,7 @@
 using MoviesApi.Entities;
 using MoviesApi.Enums.Movie;
 using MoviesApi.Enums.User;
+using MoviesApi.Enums.Vote;
 
 public class AppDbContext : DbContext
 {
@@ -18,23 +19,23 @@ public class AppDbContext : DbContext
             .HasQueryFilter(x => x.Status == MovieStatus.Online);
 
         modelBuilder.Entity<User>()
-            .HasQueryFilter(u => u.Status == UserStatus.Ativo);
+            .HasQueryFilter(u => u.Status == UserStatus.Active);
 
         modelBuilder.Entity<Vote>(v =>
         {
             v.HasKey(v => v.Id);
 
-            v.HasQueryFilter(v => v.Movie.Status == MovieStatus.Online && v.User.Status == UserStatus.Ativo);
+            v.HasQueryFilter(v => v.Movie.Status == MovieStatus.Online && v.User.Status == UserStatus.Active && v.Status == VoteStatus.Active);
 
             v.HasOne(v => v.Movie)
                 .WithMany(m => m.Votes)
                 .HasForeignKey(v => v.MovieId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             v.HasOne(v => v.User)
-                .WithMany(m => m.Votos)
+                .WithMany(u => u.Votes)
                 .HasForeignKey(v => v.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             v.HasIndex(v => new { v.UserId, v.MovieId })
                 .IsUnique();
