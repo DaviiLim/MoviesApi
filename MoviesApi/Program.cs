@@ -21,7 +21,7 @@ builder.Services.AddHttpContextAccessor();
 
 
 
-//-----------------Jwt
+//----------------Jwt
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]);
 
