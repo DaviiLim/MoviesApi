@@ -1,14 +1,14 @@
-﻿using MoviesApi.DTOs.Movie;
-using MoviesApi.DTOs.Pagination;
-using MoviesApi.Entities;
-using MoviesApi.Enums.Movie;
-using MoviesApi.Exceptions;
-using MoviesApi.Interfaces.Mappers;
-using MoviesApi.Interfaces.Repositories;
-using MoviesApi.Interfaces.Services;
+﻿using Domain.Interfaces.Repositories;
+using Domain.DTOs.Movie;
+using Domain.DTOs.Pagination;
+using Domain.Entities;
+using Domain.Enums.Movie;
+using Domain.Exceptions;
+using Domain.Interfaces.Mappers;
+using Domain.Interfaces.Services;
 using System.Data;
 
-namespace MoviesApi.Services
+namespace Domain.Services
 {
     public class MovieService : IMovieService
     {

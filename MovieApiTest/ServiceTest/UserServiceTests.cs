@@ -1,12 +1,12 @@
-﻿using Moq;
-using MoviesApi.DTOs.User;
-using MoviesApi.Entities;
-using MoviesApi.Exceptions;
-using MoviesApi.Interfaces.Repositories;
-using MoviesApi.Mapping;
-using MoviesApi.Services;
+﻿using Domain.Interfaces.Repositories;
+using Moq;
+using Domain.DTOs.User;
+using Domain.Entities;
+using Domain.Exceptions;
+using Domain.Mapping;
+using Domain.Services;
 
-namespace MovieApiTest
+namespace MovieApiTest.ServiceTest
 {
     public class UserServiceTests
     {
@@ -32,7 +32,7 @@ namespace MovieApiTest
                 Role = 0
             };
 
-            var user2 = new MoviesApi.Entities.User
+            var user2 = new Domain.Entities.User
             {
                 Id = 1,
                 Name = "userName2",
@@ -213,7 +213,7 @@ namespace MovieApiTest
         [Fact]
         public async Task DeleteUserAsync_WhenUserExists_ShouldReturnTrue()
         {
-            var user = new MoviesApi.Entities.User
+            var user = new Domain.Entities.User
             {
                 Id = 1,
                 Name = "userNameUpdated",
@@ -245,7 +245,7 @@ namespace MovieApiTest
         [Fact]
         public async Task DeleteUserAsync_WhenUserDoesntExists_ShouldReturnUserNotFoundException()
         {
-            var user = new MoviesApi.Entities.User
+            var user = new Domain.Entities.User
             {
                 Id = 1,
                 Name = "userNameUpdated",

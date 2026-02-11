@@ -1,8 +1,8 @@
-﻿using MoviesApi.Enums.User;
+﻿using Domain.Enums.User;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace MoviesApi.DTOs.User
+namespace Domain.DTOs.User
 {
     public class CreateUserRequest
     {

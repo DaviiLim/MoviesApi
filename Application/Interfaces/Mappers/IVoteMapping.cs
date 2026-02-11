@@ -1,8 +1,8 @@
-﻿using MoviesApi.DTOs.Movie;
-using MoviesApi.DTOs.Vote;
-using MoviesApi.Entities;
+﻿using Domain.DTOs.Movie;
+using Domain.DTOs.Vote;
+using Domain.Entities;
 
-namespace MoviesApi.Interfaces.Mappers
+namespace Domain.Interfaces.Mappers
 {
     public interface IVoteMapping
     {

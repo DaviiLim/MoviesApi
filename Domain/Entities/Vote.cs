@@ -1,6 +1,6 @@
-﻿using MoviesApi.Enums.Vote;
+﻿using Domain.Enums.Vote;
 
-namespace MoviesApi.Entities
+namespace Domain.Entities
 {
     public class Vote
     {

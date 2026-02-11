@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using MoviesApi.DTOs.Auth;
-using MoviesApi.DTOs.User;
-using MoviesApi.Interfaces.Services;
+using Domain.DTOs.Auth;
+using Domain.DTOs.User;
+using Domain.Interfaces.Services;
 
-namespace MoviesApi.Controllers
+namespace Domain.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

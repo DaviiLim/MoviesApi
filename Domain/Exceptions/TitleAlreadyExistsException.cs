@@ -1,4 +1,4 @@
-﻿namespace MoviesApi.Exceptions
+﻿namespace Domain.Exceptions
 {
     public class TitleAlreadyExistsException : BusinessException
     {

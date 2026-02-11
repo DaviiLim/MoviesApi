@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MoviesApi.DTOs.Pagination;
-using MoviesApi.DTOs.User;
-using MoviesApi.Interfaces.Services;
+using Domain.DTOs.Pagination;
+using Domain.DTOs.User;
+using Domain.Interfaces.Services;
 
-namespace MoviesApi.Controllers
+namespace Domain.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

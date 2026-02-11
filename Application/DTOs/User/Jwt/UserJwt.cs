@@ -1,7 +1,7 @@
-﻿using MoviesApi.Enums.User;
+﻿using Domain.Enums.User;
 using System.ComponentModel.DataAnnotations;
 
-namespace MoviesApi.DTOs.User.Jwt
+namespace Domain.DTOs.User.Jwt
 {
     public class UserJwt
     {

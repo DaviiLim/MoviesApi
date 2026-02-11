@@ -1,12 +1,12 @@
-﻿using MoviesApi.DTOs.Vote;
-using MoviesApi.Entities;
-using MoviesApi.Enums.Vote;
-using MoviesApi.Exceptions;
-using MoviesApi.Interfaces.Mappers;
-using MoviesApi.Interfaces.Repositories;
-using MoviesApi.Interfaces.Services;
+﻿using Domain.Interfaces.Repositories;
+using Domain.DTOs.Vote;
+using Domain.Entities;
+using Domain.Enums.Vote;
+using Domain.Exceptions;
+using Domain.Interfaces.Mappers;
+using Domain.Interfaces.Services;
 
-namespace MoviesApi.Services
+namespace Domain.Services
 {
     public class VoteService : IVoteService
     {

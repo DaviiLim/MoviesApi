@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 
-namespace MoviesApi.DTOs.Auth
+namespace Domain.DTOs.Auth
 {
-    // É necessário que esse usuário criado consiga DEFINIR SUA SENHA APÓS O LOGIN!
     public class AuthRegisterRequest
     {
         [Required]

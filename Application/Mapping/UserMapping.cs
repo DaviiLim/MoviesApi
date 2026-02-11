@@ -1,10 +1,10 @@
-﻿using MoviesApi.DTOs.Auth;
-using MoviesApi.DTOs.User;
-using MoviesApi.DTOs.User.Jwt;
-using MoviesApi.Entities;
-using MoviesApi.Interfaces.Mappers;
+﻿using Domain.DTOs.Auth;
+using Domain.DTOs.User;
+using Domain.DTOs.User.Jwt;
+using Domain.Entities;
+using Domain.Interfaces.Mappers;
 
-namespace MoviesApi.Mapping
+namespace Domain.Mapping
 {
     public class UserMapping : IUserMapping
     {

@@ -1,6 +1,6 @@
-﻿using MoviesApi.Entities;
+﻿using Domain.Entities;
 
-namespace MoviesApi.Interfaces.Repositories
+namespace Domain.Interfaces.Repositories
 {
     public interface IUserRepository
     {

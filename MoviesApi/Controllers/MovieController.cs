@@ -1,14 +1,14 @@
 ﻿
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MoviesApi.DTOs.Movie;
-using MoviesApi.DTOs.Pagination;
-using MoviesApi.DTOs.User;
-using MoviesApi.Interfaces.Services;
-using MoviesApi.Services;
+using Domain.DTOs.Movie;
+using Domain.DTOs.Pagination;
+using Domain.DTOs.User;
+using Domain.Interfaces.Services;
+using Domain.Services;
 using System.Security.Claims;
 
-namespace MoviesApi.Controllers
+namespace Domain.Controllers
 {
 
     [ApiController]

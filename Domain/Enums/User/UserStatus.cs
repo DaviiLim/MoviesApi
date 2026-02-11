@@ -1,4 +1,4 @@
-﻿namespace MoviesApi.Enums.User
+﻿namespace Domain.Enums.User
 {
     public enum UserStatus
     {

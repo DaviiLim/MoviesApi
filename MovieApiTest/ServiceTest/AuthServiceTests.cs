@@ -1,15 +1,15 @@
-﻿using Moq;
-using MoviesApi.DTOs.Auth;
-using MoviesApi.DTOs.User.Jwt;
-using MoviesApi.Entities;
-using MoviesApi.Exceptions;
-using MoviesApi.Interfaces.Mappers;
-using MoviesApi.Interfaces.Repositories;
-using MoviesApi.Interfaces.Services;
-using MoviesApi.Services;
+﻿using Domain.Interfaces.Repositories;
+using Moq;
+using Domain.DTOs.Auth;
+using Domain.DTOs.User.Jwt;
+using Domain.Entities;
+using Domain.Exceptions;
+using Domain.Interfaces.Mappers;
+using Domain.Interfaces.Services;
+using Domain.Services;
 using Xunit;
 
-namespace MovieApiTest.Services
+namespace MovieApiTest.ServiceTest
 {
     public class AuthServiceTests
     {

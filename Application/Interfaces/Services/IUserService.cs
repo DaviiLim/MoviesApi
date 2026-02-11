@@ -1,8 +1,8 @@
-﻿using MoviesApi.DTOs.Pagination;
-using MoviesApi.DTOs.User;
-using MoviesApi.Entities;
+﻿using Domain.DTOs.Pagination;
+using Domain.DTOs.User;
+using Domain.Entities;
 
-namespace MoviesApi.Interfaces.Services
+namespace Domain.Interfaces.Services
 {
     public interface IUserService
     {

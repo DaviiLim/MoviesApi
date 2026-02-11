@@ -1,6 +1,6 @@
-﻿using MoviesApi.DTOs.Movie;
+﻿using Domain.DTOs.Movie;
 
-namespace MoviesApi.DTOs.Vote
+namespace Domain.DTOs.Vote
 {
     public class VoteResponse
     {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MoviesApi.DTOs.Vote
+namespace Domain.DTOs.Vote
 {
     public class CreateVoteRequest
     {

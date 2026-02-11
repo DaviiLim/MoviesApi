@@ -1,8 +1,8 @@
-﻿using MoviesApi.DTOs.User;
-using MoviesApi.DTOs.User.Jwt;
-using MoviesApi.Entities;
+﻿using Domain.DTOs.User;
+using Domain.DTOs.User.Jwt;
+using Domain.Entities;
 
-namespace MoviesApi.Interfaces.Services
+namespace Domain.Interfaces.Services
 {
     public interface IJwtTokenService
     {

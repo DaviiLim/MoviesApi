@@ -1,6 +1,6 @@
-﻿using MoviesApi.DTOs.Auth;
+﻿using Domain.DTOs.Auth;
 
-namespace MoviesApi.Interfaces.Services
+namespace Domain.Interfaces.Services
 {
     public interface IAuthService
     {

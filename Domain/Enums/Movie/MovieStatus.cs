@@ -1,4 +1,4 @@
-﻿namespace MoviesApi.Enums.Movie
+﻿namespace Domain.Enums.Movie
 {
     public enum MovieStatus
     {

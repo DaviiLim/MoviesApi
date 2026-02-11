@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace MoviesApi.DTOs.Movie
+namespace Domain.DTOs.Movie
 {
     public class MovieTitleResponse
     {

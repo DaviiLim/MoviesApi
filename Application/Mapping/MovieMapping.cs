@@ -1,12 +1,12 @@
 ﻿
 
 
-using MoviesApi.DTOs.Movie;
-using MoviesApi.DTOs.User;
-using MoviesApi.Entities;
-using MoviesApi.Interfaces.Mappers;
+using Domain.DTOs.Movie;
+using Domain.DTOs.User;
+using Domain.Entities;
+using Domain.Interfaces.Mappers;
 
-namespace MoviesApi.Mapping
+namespace Domain.Mapping
 {
     public class MovieMapping : IMovieMapping
     {

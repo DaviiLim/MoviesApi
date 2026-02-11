@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace MoviesApi.DTOs.Auth
+namespace Domain.DTOs.Auth
 {
     public class AuthLoginRequest
     {

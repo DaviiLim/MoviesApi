@@ -1,11 +1,11 @@
-﻿using Moq;
-using MoviesApi.DTOs.Movie;
-using MoviesApi.Entities;
-using MoviesApi.Exceptions;
-using MoviesApi.Interfaces.Repositories;
-using MoviesApi.Interfaces.Services;
-using MoviesApi.Mapping;
-using MoviesApi.Services;
+﻿using Domain.Interfaces.Repositories;
+using Moq;
+using Domain.DTOs.Movie;
+using Domain.Entities;
+using Domain.Exceptions;
+using Domain.Interfaces.Services;
+using Domain.Mapping;
+using Domain.Services;
 
 public class MovieServiceTests
 {

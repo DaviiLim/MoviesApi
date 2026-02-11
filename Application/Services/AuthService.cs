@@ -1,10 +1,10 @@
-﻿using MoviesApi.DTOs.Auth;
-using MoviesApi.Exceptions;
-using MoviesApi.Interfaces.Mappers;
-using MoviesApi.Interfaces.Repositories;
-using MoviesApi.Interfaces.Services;
+﻿using Domain.Interfaces.Repositories;
+using Domain.DTOs.Auth;
+using Domain.Exceptions;
+using Domain.Interfaces.Mappers;
+using Domain.Interfaces.Services;
 
-namespace MoviesApi.Services
+namespace Domain.Services
 {
     public class AuthService : IAuthService
     {

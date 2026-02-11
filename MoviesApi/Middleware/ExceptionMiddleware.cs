@@ -1,8 +1,8 @@
-﻿using MoviesApi.Exceptions;
+﻿using Domain.Exceptions;
 using System.Net;
 using System.Text.Json;
 
-namespace MoviesApi.Middleware
+namespace Domain.Middleware
 {
     public class ExceptionMiddleware
     {

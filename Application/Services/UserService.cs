@@ -1,13 +1,13 @@
-﻿using MoviesApi.DTOs.Movie;
-using MoviesApi.DTOs.Pagination;
-using MoviesApi.DTOs.User;
-using MoviesApi.Enums.User;
-using MoviesApi.Exceptions;
-using MoviesApi.Interfaces.Mappers;
-using MoviesApi.Interfaces.Repositories;
-using MoviesApi.Interfaces.Services;
+﻿using Domain.Interfaces.Repositories;
+using Domain.DTOs.Movie;
+using Domain.DTOs.Pagination;
+using Domain.DTOs.User;
+using Domain.Enums.User;
+using Domain.Exceptions;
+using Domain.Interfaces.Mappers;
+using Domain.Interfaces.Services;
 
-namespace MoviesApi.Services
+namespace Domain.Services
 {
     public class UserService : IUserService
     {

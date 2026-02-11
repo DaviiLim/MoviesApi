@@ -1,7 +1,7 @@
-﻿using MoviesApi.DTOs.Vote;
-using MoviesApi.Entities;
+﻿using Domain.DTOs.Vote;
+using Domain.Entities;
 
-namespace MoviesApi.Interfaces.Services
+namespace Domain.Interfaces.Services
 {
     public interface IVoteService
     {

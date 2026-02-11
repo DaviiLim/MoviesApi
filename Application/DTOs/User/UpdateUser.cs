@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MoviesApi.DTOs.User
+namespace Domain.DTOs.User
 {
     public class UpdateUser
     {

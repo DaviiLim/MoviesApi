@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MoviesApi.Entities;
-using MoviesApi.Interfaces.Repositories;
+﻿using Domain.Interfaces.Repositories;
+using Microsoft.EntityFrameworkCore;
+using Domain.Entities;
+using Infrastructure.Data;
+using Domain.Enums.User;
 
 
-namespace MoviesApi.Repositories
+namespace Infrastructure.Repositories
 {
     public class UserRepository : IUserRepository
     {
@@ -24,7 +26,7 @@ namespace MoviesApi.Repositories
         public async Task<IEnumerable<User>> GetAllUsersAsync()
         {
             return await _context.Users
-                .Where(u => u.Role != Enums.User.UserRole.Admin)
+                .Where(u => u.Role != UserRole.Admin)
                 .ToListAsync();
         }
 

@@ -1,12 +1,12 @@
-﻿using Moq;
-using MoviesApi.DTOs.Vote;
-using MoviesApi.Entities;
-using MoviesApi.Exceptions;
-using MoviesApi.Interfaces.Mappers;
-using MoviesApi.Interfaces.Repositories;
-using MoviesApi.Services;
+﻿using Domain.Interfaces.Repositories;
+using Moq;
+using Domain.DTOs.Vote;
+using Domain.Entities;
+using Domain.Exceptions;
+using Domain.Interfaces.Mappers;
+using Domain.Services;
 
-namespace MovieApiTest.Services
+namespace MovieApiTest.ServiceTest
 {
     public class VoteServiceTests
     {

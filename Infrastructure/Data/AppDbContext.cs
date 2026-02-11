@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MoviesApi.Entities;
-using MoviesApi.Enums.Movie;
-using MoviesApi.Enums.User;
-using MoviesApi.Enums.Vote;
+using Domain.Entities;
+using Domain.Enums.Movie;
+using Domain.Enums.User;
+using Domain.Enums.Vote;
 
+namespace Infrastructure.Data;
 public class AppDbContext : DbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options)

@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MoviesApi.Entities;
-using MoviesApi.Interfaces.Repositories;
+﻿using Domain.Interfaces.Repositories;
+using Microsoft.EntityFrameworkCore;
+using Domain.Entities;
+using Infrastructure.Data;
 
-namespace MoviesApi.Repositories
+namespace Infrastructure.Repositories
 {
     public class MovieRepository : IMovieRepository
     {

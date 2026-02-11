@@ -1,4 +1,4 @@
-﻿namespace MoviesApi.DTOs.Pagination
+﻿namespace Domain.DTOs.Pagination
 {
     public class PaginationResponse<T>
     {

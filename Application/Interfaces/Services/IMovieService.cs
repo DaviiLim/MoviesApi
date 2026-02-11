@@ -1,8 +1,8 @@
-﻿using MoviesApi.DTOs.Movie;
-using MoviesApi.DTOs.Pagination;
-using MoviesApi.Entities;
+﻿using Domain.DTOs.Movie;
+using Domain.DTOs.Pagination;
+using Domain.Entities;
 
-namespace MoviesApi.Interfaces.Services
+namespace Domain.Interfaces.Services
 {
     public interface IMovieService
     {

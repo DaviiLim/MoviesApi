@@ -1,6 +1,6 @@
-﻿using MoviesApi.Enums.User;
+﻿using Domain.Enums.User;
 
-namespace MoviesApi.Entities
+namespace Domain.Entities
 {
     public class User
     {

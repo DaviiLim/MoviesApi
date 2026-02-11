@@ -1,4 +1,4 @@
-﻿namespace MoviesApi.Enums.Vote
+﻿namespace Domain.Enums.Vote
 {
     public enum VoteStatus
     {

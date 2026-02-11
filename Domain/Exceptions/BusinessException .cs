@@ -1,4 +1,4 @@
-﻿namespace MoviesApi.Exceptions
+﻿namespace Domain.Exceptions
 {
     public abstract class BusinessException : Exception
     {

@@ -1,6 +1,6 @@
-﻿using MoviesApi.Enums;
+﻿using Domain.Enums;
 
-namespace MoviesApi.DTOs.User
+namespace Domain.DTOs.User
 {
     public class UserResponse
     {
