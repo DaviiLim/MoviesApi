@@ -21,7 +21,7 @@ namespace Domain.Controllers
             _httpContextAccessor = httpContextAccessor;
         }
 
-        [Authorize(Roles = "DefaultUser, Admin")]
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> VoteAsync(CreateVoteRequest createVoteRequest)
         {
@@ -30,7 +30,7 @@ namespace Domain.Controllers
         }
 
 
-        [Authorize(Roles = "DefaultUser, Admin")]
+        [Authorize]
         [HttpDelete]
         [Route("{movieId}")]
         public async Task<IActionResult> DeleteVoteAsync(int movieId)

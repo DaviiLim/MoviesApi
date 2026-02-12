@@ -18,6 +18,7 @@ namespace Domain.Controllers
             _authService = authService;
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] AuthLoginRequest request)
         {
@@ -25,6 +26,7 @@ namespace Domain.Controllers
             return Ok(token);
         }
 
+        [AllowAnonymous]
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody]AuthRegisterRequest authRegisterRequest)
         {

@@ -24,7 +24,7 @@ namespace Domain.Controllers
             return Ok(await _userService.CreateUserAsync(createUserRequest));
         }
 
-        [Authorize(Roles = "DefaultUser,Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> GetUserByIdAsync(int id)
@@ -43,7 +43,7 @@ namespace Domain.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpGet]
-        [Route("email/")]
+        [Route("email")]
         public async Task<IActionResult> GetUserByEmailAsync(string email)
         {
             return Ok(await _userService.GetUserByEmailAsync(email));
@@ -51,7 +51,7 @@ namespace Domain.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPut]
-        [Route("update/{id}")]
+        [Route("{id}")]
         public async Task<IActionResult> UpdateUserAsync(int id, UpdateUser updateUser)
         {
             return Ok(await _userService.UpdateUserAsync(id, updateUser));
@@ -59,7 +59,7 @@ namespace Domain.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpDelete]
-        [Route("delete/{id}")]
+        [Route("{id}")]
         public async Task<IActionResult> DeleteUserAsync(int id)
         {
             return Ok(await _userService.DeleteUserAsync(id)); //alterar depois

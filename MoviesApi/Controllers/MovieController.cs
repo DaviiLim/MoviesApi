@@ -47,7 +47,7 @@ namespace Domain.Controllers
             return Ok(await _movieService.GetAllMovieAsync(paginationParams,title, genre, directors, cast));
         }
 
-        [Authorize(Roles = "DefaultUser, Admin")]
+        [Authorize]
         [HttpGet]
         [Route("MyList/")]
         public async Task<IActionResult> GetAllUserMovies()
