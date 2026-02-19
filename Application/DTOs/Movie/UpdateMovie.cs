@@ -4,6 +4,18 @@ namespace Domain.DTOs.Movie
 {
     public class UpdateMovie
     {
+        public UpdateMovie(string title, string synops, string classification, string genres, float duration, List<string> cast, List<string> directors, int releasedYear)
+        {
+            Title = title;
+            Synops = synops;
+            Classification = classification;
+            Genres = genres;
+            Duration = duration;
+            Cast = cast;
+            Directors = directors;
+            ReleasedYear = releasedYear;
+        }
+
         [Required(ErrorMessage = "Title is required")]
         [StringLength(255, MinimumLength = 5, ErrorMessage = "Title must be between 5 and 255 characters")]
         public string Title { get; set; }

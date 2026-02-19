@@ -22,7 +22,7 @@ namespace Domain.Services
             _mapping = mapping;
         }
 
-        public async Task<bool> VoteAsync(int userId, CreateVoteRequest request)
+        public async void VoteAsync(int userId, CreateVoteRequest request)
         {
             var user = await _userRepository.GetUserByIdAsync(userId)
                 ?? throw new UserNotFoundException();
@@ -48,10 +48,9 @@ namespace Domain.Services
             }
 
             await _voteRepository.SaveChangesAsync();
-            return true;
         }
 
-        public async Task<bool> DeleteVoteAsync(int userId,int movieId)
+        public async void DeleteVoteAsync(int userId,int movieId)
         {
             var user = await _userRepository.GetUserByIdAsync(userId);
             if (user == null) throw new UserNotFoundException();
@@ -68,11 +67,7 @@ namespace Domain.Services
             userVotedMovie.Status = VoteStatus.Inactive;
             userVotedMovie.DeletedAt = DateTime.Now;
 
-            await _voteRepository.DeleteVoteAsync(userVotedMovie);
-
-            return true;
-
-
+            _voteRepository.DeleteVoteAsync(userVotedMovie);
         }
     }
 }

@@ -1,11 +1,10 @@
 ﻿
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Domain.DTOs.Movie;
 using Domain.DTOs.Pagination;
-using Domain.DTOs.User;
 using Domain.Interfaces.Services;
-using Domain.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using MoviesApi.Extensions;
 using System.Security.Claims;
 
 namespace Domain.Controllers
@@ -26,14 +25,15 @@ namespace Domain.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<IActionResult> CreateMovieAsync(CreateMovieRequest createMovieRequest)
+        public async Task<IActionResult> CreateMovieAsync(CreateMovieRequest createMovieRequest, CancellationToken cancellationToken)
         {
             return Ok(await _movieService.CreateMovieAsync(createMovieRequest));
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         [Route("{id}")]
-        public async Task<IActionResult> GetMovieByIdAsync(int id)
+        public async Task<IActionResult> GetMovieByIdAsync(int id, CancellationToken cancellationToken)
         {
             return Ok(await _movieService.GetMovieByIdAsync(id));
         }
@@ -41,35 +41,39 @@ namespace Domain.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllMovieAsync(
             [FromQuery] PaginationParams paginationParams,
-            [FromQuery] string? title, string? genre, string? directors, string? cast)
-        {
+            [FromQuery] string? title, string? genre, string? directors, string? cast,
+            CancellationToken cancellationToken
+            )
 
+        {
             return Ok(await _movieService.GetAllMovieAsync(paginationParams,title, genre, directors, cast));
         }
 
         [Authorize]
         [HttpGet]
-        [Route("MyList/")]
-        public async Task<IActionResult> GetAllUserMovies()
+        [Route("voted/")]
+        public async Task<IActionResult> GetUserVotedMovies(CancellationToken cancellationToken)
         {
-            var userId = int.Parse(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var userId = User.GetUserIdFromToken();
             return Ok(await _movieService.GetAllUserMovies(userId));
         }
 
         [Authorize(Roles = "Admin")]
         [HttpPut]
-        [Route("update/{id}")]
-        public async Task<IActionResult> UpdateMovieAsync(int id, UpdateMovie updateMovie)
+        [Route("{id}")]
+        public async Task<IActionResult> UpdateMovieAsync(int id, UpdateMovie updateMovie, CancellationToken cancellationToken)
         {
-            return Ok(await _movieService.UpdateMovieAsync(id, updateMovie));
+            _movieService.UpdateMovieAsync(id, updateMovie);
+            return Ok();
         }
 
         [Authorize(Roles = "Admin")]
         [HttpDelete]
-        [Route("delete/{id}")]
-        public async Task<IActionResult> DeleteMovieAsync(int id)
+        [Route("{id}")]
+        public async Task<IActionResult> DeleteMovieAsync(int id, CancellationToken cancellationToken)
         {
-            return Ok(await _movieService.DeleteMovieAsync(id));
+            _movieService.DeleteMovieAsync(id);
+            return Ok();
         }
 
     }

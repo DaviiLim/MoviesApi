@@ -16,11 +16,10 @@ namespace Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<User> CreateUserAsync(User user)
+        public async Task CreateUserAsync(User user)
         {
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
-            return user;
         }
 
         public async Task<IEnumerable<User>> GetAllUsersAsync()
@@ -40,18 +39,16 @@ namespace Infrastructure.Repositories
             return await _context.Users.FirstOrDefaultAsync(u => u.Email == email); ;
         }
 
-        public async Task<bool> UpdateUserAsync(User user)
+        public async void UpdateUserAsync(User user)
         {
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
-            return true;
         }
 
-        public async Task<bool> DeleteUserAsync(User user)
+        public async void DeleteUserAsync(User user)
         {
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
-            return true;
         }
 
     }

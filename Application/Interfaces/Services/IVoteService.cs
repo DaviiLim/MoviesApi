@@ -5,7 +5,7 @@ namespace Domain.Interfaces.Services
 {
     public interface IVoteService
     {
-        Task<bool> VoteAsync(int userId, CreateVoteRequest request);
-        Task<bool> DeleteVoteAsync(int userId, int id);
+        void VoteAsync(int userId, CreateVoteRequest request);
+        void DeleteVoteAsync(int userId, int id);
     }
 }

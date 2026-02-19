@@ -17,9 +17,9 @@ namespace Domain.Controllers
             _userService = userService;
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<IActionResult> CreateUserAsync(CreateUserRequest createUserRequest)
+        public async Task<IActionResult> CreateUserAsync(CreateUserRequest createUserRequest, CancellationToken cancellationToken)
         {
             return Ok(await _userService.CreateUserAsync(createUserRequest));
         }
@@ -27,7 +27,7 @@ namespace Domain.Controllers
         [Authorize(Roles = "Admin")]
         [HttpGet]
         [Route("{id}")]
-        public async Task<IActionResult> GetUserByIdAsync(int id)
+        public async Task<IActionResult> GetUserByIdAsync(int id, CancellationToken cancellationToken)
         {
             return Ok(await _userService.GetUserByIdAsync(id));
         }
@@ -36,6 +36,7 @@ namespace Domain.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllUsersAsync(
             [FromQuery] PaginationParams paginationParams
+            , CancellationToken cancellationToken
             )
         {
             return Ok(await _userService.GetAllUsersAsync(paginationParams));
@@ -44,7 +45,7 @@ namespace Domain.Controllers
         [Authorize(Roles = "Admin")]
         [HttpGet]
         [Route("email")]
-        public async Task<IActionResult> GetUserByEmailAsync(string email)
+        public async Task<IActionResult> GetUserByEmailAsync(string email, CancellationToken cancellationToken)
         {
             return Ok(await _userService.GetUserByEmailAsync(email));
         }
@@ -52,7 +53,7 @@ namespace Domain.Controllers
         [Authorize(Roles = "Admin")]
         [HttpPut]
         [Route("{id}")]
-        public async Task<IActionResult> UpdateUserAsync(int id, UpdateUser updateUser)
+        public async Task<IActionResult> UpdateUserAsync(int id, UpdateUser updateUser, CancellationToken cancellationToken)
         {
             return Ok(await _userService.UpdateUserAsync(id, updateUser));
         }
@@ -60,7 +61,7 @@ namespace Domain.Controllers
         [Authorize(Roles = "Admin")]
         [HttpDelete]
         [Route("{id}")]
-        public async Task<IActionResult> DeleteUserAsync(int id)
+        public async Task<IActionResult> DeleteUserAsync(int id, CancellationToken cancellationToken)
         {
             return Ok(await _userService.DeleteUserAsync(id)); //alterar depois
         }

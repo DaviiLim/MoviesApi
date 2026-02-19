@@ -1,5 +1,4 @@
 ﻿using Domain.Interfaces.Repositories;
-using Domain.DTOs.Movie;
 using Domain.DTOs.Pagination;
 using Domain.DTOs.User;
 using Domain.Enums.User;
@@ -31,7 +30,9 @@ namespace Domain.Services
 
             createUserRequest.Password = password;
 
-            var user = await _userRepository.CreateUserAsync(_mapping.CreateUserRequestToEntity(createUserRequest));
+            var user = _mapping.CreateUserRequestToEntity(createUserRequest);
+
+            await _userRepository.CreateUserAsync(user);
 
             return _mapping.ToResponse(user);
         }
@@ -86,7 +87,7 @@ namespace Domain.Services
 
             user.Name = updateUser.Name;
 
-            await _userRepository.UpdateUserAsync(user);
+            _userRepository.UpdateUserAsync(user);
 
             return true;
         }
@@ -99,7 +100,7 @@ namespace Domain.Services
 
             user.Status = UserStatus.Inactive;
 
-            await _userRepository.DeleteUserAsync(user);
+            _userRepository.DeleteUserAsync(user);
 
             return true;
         }

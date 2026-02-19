@@ -20,7 +20,7 @@ namespace Domain.Controllers
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] AuthLoginRequest request)
+        public async Task<IActionResult> Login([FromBody] AuthLoginRequest request, CancellationToken cancellationToken)
         {
             var token = await _authService.LoginAsync(request);
             return Ok(token);
@@ -28,7 +28,7 @@ namespace Domain.Controllers
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody]AuthRegisterRequest authRegisterRequest)
+        public async Task<IActionResult> Register([FromBody]AuthRegisterRequest authRegisterRequest, CancellationToken cancellationToken)
         {
             await _authService.RegisterAsync(authRegisterRequest);
             

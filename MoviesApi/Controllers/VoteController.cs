@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Domain.DTOs.Vote;
+using Domain.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Domain.DTOs.Vote;
-using Domain.Interfaces.Services;
+using MoviesApi.Extensions;
 using System.Reflection.Metadata.Ecma335;
 using System.Security.Claims;
 
@@ -23,20 +24,22 @@ namespace Domain.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> VoteAsync(CreateVoteRequest createVoteRequest)
+        public async Task<IActionResult> VoteAsync(CreateVoteRequest createVoteRequest, CancellationToken cancellationToken)
         {
-            var userId = int.Parse(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            return Ok(await _voteService.VoteAsync(userId, createVoteRequest));
+            var userId = User.GetUserIdFromToken();
+            _voteService.VoteAsync(userId, createVoteRequest);
+            return Ok();
         }
 
 
         [Authorize]
         [HttpDelete]
         [Route("{movieId}")]
-        public async Task<IActionResult> DeleteVoteAsync(int movieId)
+        public async Task<IActionResult> DeleteVoteAsync(int movieId, CancellationToken cancellationToken)
         {
-            var userId = int.Parse(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            return Ok(await _voteService.DeleteVoteAsync(userId, movieId));
+            var userId = User.GetUserIdFromToken();
+            _voteService.DeleteVoteAsync(userId, movieId);
+            return Ok();
         }
 
     }

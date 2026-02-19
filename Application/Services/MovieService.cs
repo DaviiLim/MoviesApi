@@ -131,7 +131,7 @@ namespace Domain.Services
                 return movieTitleResponse;
         }
 
-        public async Task<bool> UpdateMovieAsync(int id, UpdateMovie updateMovie)
+        public async void UpdateMovieAsync(int id, UpdateMovie updateMovie)
         {
             var movie = await _movieRepository.GetMovieByIdAsync(id);
 
@@ -147,21 +147,18 @@ namespace Domain.Services
             movie.ReleasedYear = updateMovie.ReleasedYear;
 
             movie.UpdatedAt = DateTime.Now;
-            await _movieRepository.UpdateMovieAsync(movie);
 
-            return true;
+            _movieRepository.UpdateMovieAsync(movie);
         }
 
-        public async Task<bool> DeleteMovieAsync(int id)
+        public async void DeleteMovieAsync(int id)
         {
             var movie = await _movieRepository.GetMovieByIdAsync(id);
             if (movie == null) throw new MovieNotFoundException();
 
             movie.Status = MovieStatus.Offline;
             movie.DeletedAt = DateTime.Now;
-            await _movieRepository.DeleteMovieAsync(movie);
-
-            return true;
+            _movieRepository.DeleteMovieAsync(movie);
         }
     }
 }

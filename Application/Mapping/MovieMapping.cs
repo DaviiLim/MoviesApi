@@ -1,7 +1,4 @@
-﻿
-
-
-using Domain.DTOs.Movie;
+﻿using Domain.DTOs.Movie;
 using Domain.DTOs.User;
 using Domain.Entities;
 using Domain.Interfaces.Mappers;
