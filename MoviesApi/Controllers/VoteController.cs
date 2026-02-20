@@ -14,12 +14,10 @@ namespace Domain.Controllers
     public class VoteController : ControllerBase
     {
         private readonly IVoteService _voteService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public VoteController(IVoteService voteService, IHttpContextAccessor httpContextAccessor)
         {
             _voteService = voteService;
-            _httpContextAccessor = httpContextAccessor;
         }
 
         [Authorize]

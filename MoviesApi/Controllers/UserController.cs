@@ -21,7 +21,8 @@ namespace Domain.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateUserAsync(CreateUserRequest createUserRequest, CancellationToken cancellationToken)
         {
-            return Ok(await _userService.CreateUserAsync(createUserRequest));
+            var user = await _userService.CreateUserAsync(createUserRequest);
+            return Ok();
         }
 
         [Authorize(Roles = "Admin")]
@@ -29,7 +30,8 @@ namespace Domain.Controllers
         [Route("{id}")]
         public async Task<IActionResult> GetUserByIdAsync(int id, CancellationToken cancellationToken)
         {
-            return Ok(await _userService.GetUserByIdAsync(id));
+            var user = await _userService.GetUserByIdAsync(id);
+            return Ok();
         }
 
         [Authorize(Roles = "Admin")]
@@ -39,7 +41,8 @@ namespace Domain.Controllers
             , CancellationToken cancellationToken
             )
         {
-            return Ok(await _userService.GetAllUsersAsync(paginationParams));
+            var users = await _userService.GetAllUsersAsync(paginationParams);
+            return Ok(users);
         }
 
         [Authorize(Roles = "Admin")]
@@ -47,7 +50,8 @@ namespace Domain.Controllers
         [Route("email")]
         public async Task<IActionResult> GetUserByEmailAsync(string email, CancellationToken cancellationToken)
         {
-            return Ok(await _userService.GetUserByEmailAsync(email));
+            var user = await _userService.GetUserByEmailAsync(email);
+            return Ok(user);
         }
 
         [Authorize(Roles = "Admin")]
@@ -55,7 +59,8 @@ namespace Domain.Controllers
         [Route("{id}")]
         public async Task<IActionResult> UpdateUserAsync(int id, UpdateUser updateUser, CancellationToken cancellationToken)
         {
-            return Ok(await _userService.UpdateUserAsync(id, updateUser));
+            await _userService.UpdateUserAsync(id, updateUser);
+            return Ok();
         }
 
         [Authorize(Roles = "Admin")]
@@ -63,7 +68,8 @@ namespace Domain.Controllers
         [Route("{id}")]
         public async Task<IActionResult> DeleteUserAsync(int id, CancellationToken cancellationToken)
         {
-            return Ok(await _userService.DeleteUserAsync(id)); //alterar depois
+            await _userService.DeleteUserAsync(id);
+            return Ok(); //alterar depois
         }
     }
 }
