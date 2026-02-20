@@ -1,8 +1,9 @@
-﻿using Domain.Interfaces.Repositories;
-using Microsoft.EntityFrameworkCore;
+﻿using Domain.DTOs.Pagination;
 using Domain.Entities;
-using Infrastructure.Data;
 using Domain.Enums.User;
+using Domain.Interfaces.Repositories;
+using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace Infrastructure.Repositories
@@ -22,11 +23,30 @@ namespace Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<User>> GetAllUsersAsync()
+        public async Task<PaginationResponse<User>> GetAllUsersAsync(PaginationParams paginationParams)
         {
-            return await _context.Users
-                .Where(u => u.Role != UserRole.Admin)
+            var query = _context.Users
+                .AsNoTracking()
+                .AsQueryable();
+
+
+            var totalItems = await query.CountAsync();
+
+            query = query
+                .OrderBy(u => u.Name);
+
+            var pagedMovies = await query
+                .Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)
+                .Take(paginationParams.PageSize)
                 .ToListAsync();
+
+            return new PaginationResponse<User>
+            {
+                PageNumber = paginationParams.PageNumber,
+                PageSize = paginationParams.PageSize,
+                TotalItems = totalItems,
+                Items = pagedMovies
+            };
         }
 
         public async Task<User?> GetUserByIdAsync(int id)

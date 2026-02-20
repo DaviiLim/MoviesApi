@@ -1,9 +1,10 @@
-﻿using Domain.Interfaces.Repositories;
+﻿using Domain.DTOs.Movie;
 using Domain.DTOs.Pagination;
 using Domain.DTOs.User;
 using Domain.Enums.User;
 using Domain.Exceptions;
 using Domain.Interfaces.Mappers;
+using Domain.Interfaces.Repositories;
 using Domain.Interfaces.Services;
 
 namespace Domain.Services
@@ -39,28 +40,18 @@ namespace Domain.Services
 
         public async Task<PaginationResponse<UserResponse>> GetAllUsersAsync(PaginationParams paginationParams)
         {
-            var users = await _userRepository.GetAllUsersAsync();
-            var query = users.AsQueryable();
+            var movies = await _userRepository
+                .GetAllUsersAsync(paginationParams);
 
-            var totalItems = query.Count();
-
-            query = query
-                .OrderBy(u => u.Name);
-
-            var pagedUsers = query
-                .Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)
-                .Take(paginationParams.PageSize)
-                .ToList();
-
-            var items = pagedUsers.Select(u => _mapping.ToResponse(u));
-
-            return new PaginationResponse<UserResponse>
+            var response = new PaginationResponse<UserResponse>
             {
-                Items = items,
-                TotalItems = totalItems,
-                PageNumber = paginationParams.PageNumber,
-                PageSize = paginationParams.PageSize
+                PageNumber = movies.PageNumber,
+                PageSize = movies.PageSize,
+                TotalItems = movies.TotalItems,
+                Items = movies.Items.Select( u => _mapping.ToResponse(u) ).ToList()
             };
+
+            return response;
         }
 
         public async Task<UserResponse> GetUserByIdAsync(int id)
@@ -79,7 +70,7 @@ namespace Domain.Services
             return _mapping.ToResponse(user);
         }
 
-        public async Task<bool> UpdateUserAsync(int id, UpdateUser updateUser)
+        public async void UpdateUserAsync(int id, UpdateUser updateUser)
         {
             var user = await _userRepository.GetUserByIdAsync(id);
 
@@ -88,11 +79,9 @@ namespace Domain.Services
             user.Name = updateUser.Name;
 
             _userRepository.UpdateUserAsync(user);
-
-            return true;
         }
 
-        public async Task<bool> DeleteUserAsync(int id)
+        public async void DeleteUserAsync(int id)
         {
             var user = await _userRepository.GetUserByIdAsync(id);
 
@@ -101,8 +90,6 @@ namespace Domain.Services
             user.Status = UserStatus.Inactive;
 
             _userRepository.DeleteUserAsync(user);
-
-            return true;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Domain.Interfaces.Services
         Task<PaginationResponse<UserResponse>> GetAllUsersAsync(PaginationParams paginationParams);
         Task<UserResponse> GetUserByIdAsync(int id);
         Task<UserResponse> GetUserByEmailAsync(string email);
-        Task<bool> UpdateUserAsync(int id, UpdateUser dto);
-        Task<bool> DeleteUserAsync(int id);
+        void UpdateUserAsync(int id, UpdateUser dto);
+       void DeleteUserAsync(int id);
     }
 }

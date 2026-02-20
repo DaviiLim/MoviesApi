@@ -1,12 +1,12 @@
 ﻿using Domain.Interfaces.Repositories;
 using Domain.DTOs.Movie;
-using Domain.DTOs.Pagination;
 using Domain.Entities;
 using Domain.Enums.Movie;
 using Domain.Exceptions;
 using Domain.Interfaces.Mappers;
 using Domain.Interfaces.Services;
 using System.Data;
+using Domain.DTOs.Pagination;
 
 namespace Domain.Services
 {
@@ -33,66 +33,33 @@ namespace Domain.Services
             return _mapping.ToDetailsResponse(movie, 0, 0);
         }
 
-        public async Task<PaginationResponse<MovieTitleResponse>> GetAllMovieAsync(PaginationParams paginationParams, string? title, string? genre, string? directors, string? cast)
+        public async Task<PaginationResponse<MovieTitleResponse>> GetAllMovieAsync(
+            PaginationParams paginationParams,
+            string? title,
+            string? genre,
+            string? directors,
+            string? cast)
         {
-            var movies = await _movieRepository.GetAllMovieAsync();
-            var query = movies.AsQueryable();
+            var movies = await _movieRepository
+                .GetAllMovieAsync(paginationParams, title, genre, directors, cast);
 
-            if (!string.IsNullOrWhiteSpace(title))
+            var response = new PaginationResponse<MovieTitleResponse>
             {
-                query = query.Where(m =>
-                    m.Title.ToLower().Contains(title.ToLower()));
-            }
-
-            if (!string.IsNullOrWhiteSpace(genre))
-            {
-                query = query.Where(m =>
-                    m.Genres.ToLower().Contains(genre.ToLower()));
-            }
-
-            if (!string.IsNullOrWhiteSpace(directors))
-            {
-                query = query.Where(m =>
-                    m.Directors.Any(d =>
-                        d.ToLower().Contains(directors.ToLower())));
-            }
-
-            if (!string.IsNullOrWhiteSpace(cast))
-            {
-                query = query.Where(m =>
-                    m.Cast.Any(a =>
-                        a.ToLower().Contains(cast.ToLower())));
-            }
-
-            var totalItems = query.Count();
-
-            query = query
-                .OrderByDescending(m => m.Votes.Count())
-                .ThenBy(m => m.Title);
-
-            var pagedMovies = query
-                .Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)
-                .Take(paginationParams.PageSize)
-                .ToList();
-
-            var items = pagedMovies.Select(m =>
-            {
-                var averageScore = m.Votes.Any()
-                    ? m.Votes.Average(v => v.Score)
-                    : 0;
-
-                var totalVotes = m.Votes.Count;
-
-                return _mapping.ToMovieTitleResponse(m, averageScore, totalVotes);
-            });
-
-            return new PaginationResponse<MovieTitleResponse>
-            {
-                Items = items,
-                TotalItems = totalItems,
-                PageNumber = paginationParams.PageNumber,
-                PageSize = paginationParams.PageSize
+                PageNumber = movies.PageNumber,
+                PageSize = movies.PageSize,
+                TotalItems = movies.TotalItems,
+                Items = movies.Items.Select(m => new MovieTitleResponse
+                {
+                    Id = m.Id,
+                    Title = m.Title,
+                    AvarageScore = m.Votes.Any()
+                        ? m.Votes.Average(v => v.Score)
+                        : 0,
+                    TotalVotes = m.Votes.Count
+                }).ToList()
             };
+
+            return response;
         }
 
         public async Task<MovieDetailsResponse> GetMovieByIdAsync(int id)

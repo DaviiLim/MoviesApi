@@ -1,7 +1,8 @@
-﻿using Domain.Interfaces.Repositories;
-using Microsoft.EntityFrameworkCore;
+﻿using Domain.DTOs.Pagination;
 using Domain.Entities;
+using Domain.Interfaces.Repositories;
 using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
@@ -20,11 +21,62 @@ namespace Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Movie>> GetAllMovieAsync()
+        public async Task<PaginationResponse<Movie>> GetAllMovieAsync(
+            PaginationParams paginationParams,
+            string? title,
+            string? genre,
+            string? directors,
+            string? cast)
         {
-            return await _context.Movies
+            var query = _context.Movies
                 .Include(m => m.Votes)
+                .AsNoTracking()
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(title))
+            {
+                query = query.Where(m =>
+                    m.Title.ToLower().Contains(title.ToLower()));
+            }
+
+            if (!string.IsNullOrWhiteSpace(genre))
+            {
+                query = query.Where(m =>
+                    m.Genres.ToLower().Contains(genre.ToLower()));
+            }
+
+            if (!string.IsNullOrWhiteSpace(directors))
+            {
+                query = query.Where(m =>
+                    m.Directors.Any(d =>
+                        d.ToLower().Contains(directors.ToLower())));
+            }
+
+            if (!string.IsNullOrWhiteSpace(cast))
+            {
+                query = query.Where(m =>
+                    m.Cast.Any(a =>
+                        a.ToLower().Contains(cast.ToLower())));
+            }
+
+            var totalItems = await query.CountAsync();
+
+            query = query
+                .OrderByDescending(m => m.Votes.Count())
+                .ThenBy(m => m.Title);
+
+            var pagedMovies = await query
+                .Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)
+                .Take(paginationParams.PageSize)
                 .ToListAsync();
+
+            return new PaginationResponse<Movie>
+            {
+                PageNumber = paginationParams.PageNumber,
+                PageSize = paginationParams.PageSize,
+                TotalItems = totalItems,
+                Items = pagedMovies
+            };
         }
 
         public async Task<Movie?> GetMovieByIdAsync(int id)
