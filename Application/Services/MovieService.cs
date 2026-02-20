@@ -46,7 +46,7 @@ namespace Domain.Services
             var movies = await _movieRepository
                 .GetAllMovieAsync(paginationParams, title, genre, directors, cast);
 
-            var MovieDetailsResponse = new PaginationResponse<MovieTitleResponse>
+            var movieTitleResponse = new PaginationResponse<MovieTitleResponse>
             {
                 PageNumber = movies.PageNumber,
                 PageSize = movies.PageSize,
@@ -55,14 +55,17 @@ namespace Domain.Services
                 {
                     Id = m.Id,
                     Title = m.Title,
-                    AvarageScore = m.Votes.Any()
-                        ? m.Votes.Average(v => v.Score)
+                    Genres = m.Genres,
+                    Directors = m.Directors,
+                    Cast = m.Cast,
+                    AvarageScore = m.Votes!.Any()
+                        ? m.Votes!.Average(v => v.Score)
                         : 0,
-                    TotalVotes = m.Votes.Count
+                    TotalVotes = m.Votes!.Count
                 }).ToList()
             };
 
-            return Result.Ok(MovieDetailsResponse);
+            return Result.Ok(movieTitleResponse);
         }
 
         public async Task<Result<MovieDetailsResponse>> GetMovieByIdAsync(int id)
@@ -122,7 +125,7 @@ namespace Domain.Services
 
             movie.UpdatedAt = DateTime.Now;
 
-            _movieRepository.UpdateMovieAsync(movie);
+            await _movieRepository.UpdateMovieAsync(movie);
 
             return Result.Ok();
         }
@@ -135,7 +138,7 @@ namespace Domain.Services
 
             movie.Status = MovieStatus.Offline;
             movie.DeletedAt = DateTime.Now;
-            _movieRepository.DeleteMovieAsync(movie);
+            await _movieRepository.DeleteMovieAsync(movie);
 
             return Result.Ok();
         }

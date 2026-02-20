@@ -10,7 +10,7 @@ namespace Domain.Interfaces.Repositories
         Task<Movie?> GetMovieByIdAsync(int id);
         Task<Movie?> GetMovieByTitleAsync(string title);
         Task<IEnumerable<Movie>> GetAllMoviesVotedByUser(int userId);
-        void UpdateMovieAsync(Movie movie);
-        void DeleteMovieAsync(Movie movie);
+        Task UpdateMovieAsync(Movie movie);
+        Task DeleteMovieAsync(Movie movie);
     }
 }

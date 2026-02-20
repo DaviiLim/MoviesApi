@@ -89,7 +89,7 @@ namespace Domain.Services
 
             user.Name = updateUser.Name;
 
-            _userRepository.UpdateUserAsync(user);
+            await _userRepository.UpdateUserAsync(user);
 
             return Result.Ok();
         }
@@ -103,7 +103,7 @@ namespace Domain.Services
 
             user.Status = UserStatus.Inactive;
 
-            _userRepository.DeleteUserAsync(user);
+            await _userRepository.DeleteUserAsync(user);
 
             return Result.Ok();
         }

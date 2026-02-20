@@ -4,6 +4,8 @@ using Domain.Interfaces.Mappers;
 using Domain.Interfaces.Services;
 using FluentResults;
 using Domain.Errors;
+using Domain.Entities;
+using Domain.DTOs.User;
 
 namespace Domain.Services
 {
@@ -35,7 +37,7 @@ namespace Domain.Services
             return Result.Ok(token);
         }
 
-        public async Task<Result> RegisterAsync(AuthRegisterRequest authRegisterRequest)
+        public async Task<Result<UserResponse>> RegisterAsync(AuthRegisterRequest authRegisterRequest)
         {
             var user = await _userRepository.GetUserByEmailAsync(authRegisterRequest.Email);
 
@@ -49,9 +51,10 @@ namespace Domain.Services
 
             authRegisterRequest.Password = password;
             
-            await _userRepository.CreateUserAsync(_mapping.AuthRegisterRequestToEntity(authRegisterRequest));
+            var entityUser = await _userRepository.CreateUserAsync(_mapping.AuthRegisterRequestToEntity(authRegisterRequest));
+            var userResponse = _mapping.ToResponse(entityUser);
 
-            return Result.Ok();
+            return Result.Ok(userResponse);
         }
     }
 }

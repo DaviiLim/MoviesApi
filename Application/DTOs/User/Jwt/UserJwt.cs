@@ -9,7 +9,7 @@ namespace Domain.DTOs.User.Jwt
         public int Id { get; set; }
         [Required]
         [EmailAddress]
-        public string Email { get; set; }
+        public required string Email { get; set; }
         public UserStatus Status { get; set; }
         public UserRole Role { get; set; }
     }

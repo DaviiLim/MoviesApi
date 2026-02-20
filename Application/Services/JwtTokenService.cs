@@ -28,11 +28,11 @@ namespace Application.Services
         };
 
             var key = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(_configuration["Jwt:Key"])         
+                Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!)         
             );
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var expireMinutes = int.Parse(_configuration["Jwt:ExpireMinutes"]);
+            var expireMinutes = int.Parse(_configuration["Jwt:ExpireMinutes"]!);
 
             var token = new JwtSecurityToken(
             issuer: _configuration["Jwt:Issuer"],                                            

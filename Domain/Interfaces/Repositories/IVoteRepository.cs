@@ -9,6 +9,6 @@ namespace Domain.Interfaces.Repositories
         Task<IEnumerable<Vote>> GetAllVotesAsync();
         Task<Vote?> GetVoteByIdAsync(int id);
         Task<Vote?> ExistsVoteAsync(int userId, int movieId);
-        void DeleteVoteAsync(Vote vote);
+        Task DeleteVoteAsync(Vote vote);
     }
 }

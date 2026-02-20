@@ -43,7 +43,7 @@ namespace Infrastructure.Repositories
                     v.MovieId == movieId);
         }
 
-        public async void DeleteVoteAsync(Vote vote)
+        public async Task DeleteVoteAsync(Vote vote)
         {
             _context.Votes.Update(vote);
             await _context.SaveChangesAsync();

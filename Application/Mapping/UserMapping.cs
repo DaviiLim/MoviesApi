@@ -43,7 +43,7 @@ namespace Domain.Mapping
             {
                 Id = user.Id,
                 Name = user.Name,
-                Email = user.Email,
+                Email = user.Email!,
             };
         }
         public UserJwt ToJwtEntity(User user)
@@ -51,7 +51,7 @@ namespace Domain.Mapping
             return new UserJwt
             {
                 Id = user.Id,
-                Email = user.Email,
+                Email = user.Email!,
                 Status = user.Status,
                 Role = user.Role
             };

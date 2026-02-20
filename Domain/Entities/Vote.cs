@@ -11,7 +11,7 @@ namespace Domain.Entities
         public VoteStatus Status { get; set; } = VoteStatus.Active;
         public DateTime CreatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
-        public User? User { get; set; }
-        public Movie? Movie { get; set; }
+        public User User { get; set; } = null!;
+        public Movie Movie { get; set; } = null!;
     }
 }

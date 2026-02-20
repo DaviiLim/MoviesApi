@@ -62,7 +62,7 @@ namespace Infrastructure.Repositories
             var totalItems = await query.CountAsync();
 
             query = query
-                .OrderByDescending(m => m.Votes.Count())
+                .OrderByDescending(m => m.Votes!.Count())
                 .ThenBy(m => m.Title);
 
             var pagedMovies = await query
@@ -95,19 +95,19 @@ namespace Infrastructure.Repositories
         public async Task<IEnumerable<Movie>> GetAllMoviesVotedByUser(int userId)
         {
             return await _context.Movies
-                .Where(m => m.Votes.Any(v => v.UserId == userId))
-                .Include(m => m.Votes.Where(v => v.UserId == userId))
+                .Where(m => m.Votes!.Any(v => v.UserId == userId))
+                .Include(m => m.Votes!.Where(v => v.UserId == userId))
                 .ToListAsync();
         }
 
 
-        public async void UpdateMovieAsync(Movie movie)
+        public async Task UpdateMovieAsync(Movie movie)
         {
             _context.Movies.Update(movie);
             await _context.SaveChangesAsync();
         }
 
-        public async void DeleteMovieAsync(Movie movie)
+        public async Task DeleteMovieAsync(Movie movie)
         {
             _context.Movies.Update(movie);
             await _context.SaveChangesAsync();

@@ -29,9 +29,9 @@ namespace Domain.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody]AuthRegisterRequest authRegisterRequest, CancellationToken cancellationToken)
         {
-            await _authService.RegisterAsync(authRegisterRequest);
+            var user = await _authService.RegisterAsync(authRegisterRequest);
             
-            return NoContent();
+            return HandleResult(user);
         }
     }
 }

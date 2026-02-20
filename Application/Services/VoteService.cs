@@ -74,7 +74,7 @@ namespace Domain.Services
             userVotedMovie.Status = VoteStatus.Inactive;
             userVotedMovie.DeletedAt = DateTime.Now;
 
-            _voteRepository.DeleteVoteAsync(userVotedMovie);
+            await _voteRepository.DeleteVoteAsync(userVotedMovie);
             return Result.Ok();
         }
     }

@@ -17,10 +17,11 @@ namespace Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task CreateUserAsync(User user)
+        public async Task<User> CreateUserAsync(User user)
         {
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
+            return user;
         }
 
         public async Task<PaginationResponse<User>> GetAllUsersAsync(PaginationParams paginationParams)
@@ -59,13 +60,13 @@ namespace Infrastructure.Repositories
             return await _context.Users.FirstOrDefaultAsync(u => u.Email == email); ;
         }
 
-        public async void UpdateUserAsync(User user)
+        public async Task UpdateUserAsync(User user)
         {
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
         }
 
-        public async void DeleteUserAsync(User user)
+        public async Task DeleteUserAsync(User user)
         {
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
