@@ -8,7 +8,7 @@ namespace Domain.Entities
         public int UserId { get; set; }
         public int MovieId { get; set; }
         public float Score { get; set; }
-        public VoteStatus Status { get; set; }
+        public VoteStatus Status { get; set; } = VoteStatus.Active;
         public DateTime CreatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
         public User? User { get; set; }

@@ -8,7 +8,6 @@ using Microsoft.OpenApi.Models;
 using Domain.Interfaces.Mappers;
 using Domain.Interfaces.Services;
 using Domain.Mapping;
-using Domain.Middleware;
 using Domain.Services;
 using System.Text;
 using Infrastructure.Data;
@@ -116,8 +115,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseHttpsRedirection();
 

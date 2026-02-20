@@ -25,8 +25,8 @@ namespace Domain.Controllers
         public async Task<IActionResult> VoteAsync(CreateVoteRequest createVoteRequest, CancellationToken cancellationToken)
         {
             var userId = User.GetUserIdFromToken();
-            _voteService.VoteAsync(userId, createVoteRequest);
-            return Ok();
+            await _voteService.VoteAsync(userId, createVoteRequest);
+            return NoContent();
         }
 
 
@@ -36,8 +36,8 @@ namespace Domain.Controllers
         public async Task<IActionResult> DeleteVoteAsync(int movieId, CancellationToken cancellationToken)
         {
             var userId = User.GetUserIdFromToken();
-            _voteService.DeleteVoteAsync(userId, movieId);
-            return Ok();
+            await _voteService.DeleteVoteAsync(userId, movieId);
+            return NoContent();
         }
 
     }

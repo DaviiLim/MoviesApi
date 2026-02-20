@@ -1,8 +1,9 @@
 ﻿using Domain.Interfaces.Repositories;
 using Domain.DTOs.Auth;
-using Domain.Exceptions;
 using Domain.Interfaces.Mappers;
 using Domain.Interfaces.Services;
+using FluentResults;
+using Domain.Errors;
 
 namespace Domain.Services
 {
@@ -19,27 +20,30 @@ namespace Domain.Services
             _mapping = mapping;
         }
 
-        public async Task<string> LoginAsync(AuthLoginRequest authLoginRequest)
+        public async Task<Result<string>> LoginAsync(AuthLoginRequest authLoginRequest)
         {
             var user = await _userRepository.GetUserByEmailAsync(authLoginRequest.Email);
-            if (user == null) throw new EmailNotFoundException();
+            if (user == null)
+                return Result.Fail(new NotFoundError("User not found."));
 
-            if (!BCrypt.Net.BCrypt.Verify(authLoginRequest.Password,user.Password))
-                throw new InvalidCredentialsException();
+            if (!BCrypt.Net.BCrypt.Verify(authLoginRequest.Password, user.Password))
+                return Result.Fail(new UnauthorizedError("Invalid credentials."));
 
             var userJwt = _mapping.ToJwtEntity(user);
             var token = _tokenService.GenerateToken(userJwt);
-            return token;
+
+            return Result.Ok(token);
         }
 
-        public async Task<bool> RegisterAsync(AuthRegisterRequest authRegisterRequest)
+        public async Task<Result> RegisterAsync(AuthRegisterRequest authRegisterRequest)
         {
             var user = await _userRepository.GetUserByEmailAsync(authRegisterRequest.Email);
 
-            if (user != null) throw new EmailAlreadyExistsException(); 
+            if (user != null)
+                return Result.Fail(new ConflictError("Email already exists"));
 
             if (authRegisterRequest.Password != authRegisterRequest.ConfirmPassword)
-                throw new InvalidCredentialsException();
+                return Result.Fail(new UnauthorizedError("Invalid credentials."));
 
             string password = BCrypt.Net.BCrypt.HashPassword(authRegisterRequest.Password);
 
@@ -47,7 +51,7 @@ namespace Domain.Services
             
             await _userRepository.CreateUserAsync(_mapping.AuthRegisterRequestToEntity(authRegisterRequest));
 
-            return true;
+            return Result.Ok();
         }
     }
 }

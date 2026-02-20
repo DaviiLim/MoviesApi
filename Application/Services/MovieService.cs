@@ -2,11 +2,12 @@
 using Domain.DTOs.Movie;
 using Domain.Entities;
 using Domain.Enums.Movie;
-using Domain.Exceptions;
 using Domain.Interfaces.Mappers;
 using Domain.Interfaces.Services;
 using System.Data;
 using Domain.DTOs.Pagination;
+using FluentResults;
+using Domain.Errors;
 
 namespace Domain.Services
 {
@@ -22,18 +23,20 @@ namespace Domain.Services
             _mapping = movieMapping;
         }
 
-        public async Task<MovieDetailsResponse> CreateMovieAsync(CreateMovieRequest createMovieRequest)
+        public async Task<Result<MovieDetailsResponse>> CreateMovieAsync(CreateMovieRequest createMovieRequest)
         {
             var movieByTitle = await _movieRepository.GetMovieByTitleAsync(createMovieRequest.Title);
             if (movieByTitle != null)
-                throw new TitleAlreadyExistsException();
+                return Result.Fail(new NotFoundError("This Title is already in use."));
 
             var movie = _mapping.CreateMovieRequestToEntity(createMovieRequest);
             await _movieRepository.CreateMovieAsync(movie);
-            return _mapping.ToDetailsResponse(movie, 0, 0);
+
+            var movieDetailsResponse = _mapping.ToDetailsResponse(movie, 0, 0);
+            return Result.Ok(movieDetailsResponse);
         }
 
-        public async Task<PaginationResponse<MovieTitleResponse>> GetAllMovieAsync(
+        public async Task<Result<PaginationResponse<MovieTitleResponse>>> GetAllMovieAsync(
             PaginationParams paginationParams,
             string? title,
             string? genre,
@@ -43,7 +46,7 @@ namespace Domain.Services
             var movies = await _movieRepository
                 .GetAllMovieAsync(paginationParams, title, genre, directors, cast);
 
-            var response = new PaginationResponse<MovieTitleResponse>
+            var MovieDetailsResponse = new PaginationResponse<MovieTitleResponse>
             {
                 PageNumber = movies.PageNumber,
                 PageSize = movies.PageSize,
@@ -59,15 +62,15 @@ namespace Domain.Services
                 }).ToList()
             };
 
-            return response;
+            return Result.Ok(MovieDetailsResponse);
         }
 
-        public async Task<MovieDetailsResponse> GetMovieByIdAsync(int id)
+        public async Task<Result<MovieDetailsResponse>> GetMovieByIdAsync(int id)
         {
             var movie = await _movieRepository.GetMovieByIdAsync(id);
 
             if (movie == null)
-                throw new MovieNotFoundException();
+                return Result.Fail(new NotFoundError("Movie not found."));
 
             var votes = movie.Votes ?? new List<Vote>();
 
@@ -77,10 +80,12 @@ namespace Domain.Services
 
             var totalVotes = votes.Count();
 
-            return _mapping.ToDetailsResponse(movie, averageScore, totalVotes);
+            var MovieDetailsResponse = _mapping.ToDetailsResponse(movie, averageScore, totalVotes);
+
+            return Result.Ok(MovieDetailsResponse);
         }
 
-        public async Task<IEnumerable<MovieTitleResponse>> GetAllUserMovies(int userId) 
+        public async Task<Result<IEnumerable<MovieTitleResponse>>> GetAllMoviesVotedByUser(int userId) 
         {
             var movies = await _movieRepository.GetAllMoviesVotedByUser(userId);
             var movieTitleResponse = movies.Select(m =>
@@ -95,14 +100,16 @@ namespace Domain.Services
 
                 return _mapping.ToMovieTitleResponse(m, averageScore, totalVotes);
             });
-                return movieTitleResponse;
+
+                return Result.Ok(movieTitleResponse);
         }
 
-        public async void UpdateMovieAsync(int id, UpdateMovie updateMovie)
+        public async Task<Result> UpdateMovieAsync(int id, UpdateMovie updateMovie)
         {
             var movie = await _movieRepository.GetMovieByIdAsync(id);
 
-            if (movie == null) throw new MovieNotFoundException();
+            if (movie == null)
+                return Result.Fail(new NotFoundError("Movie not found."));
 
             movie.Title = updateMovie.Title;
             movie.Synops = updateMovie.Synops;
@@ -116,16 +123,21 @@ namespace Domain.Services
             movie.UpdatedAt = DateTime.Now;
 
             _movieRepository.UpdateMovieAsync(movie);
+
+            return Result.Ok();
         }
 
-        public async void DeleteMovieAsync(int id)
+        public async Task<Result> DeleteMovieAsync(int id)
         {
             var movie = await _movieRepository.GetMovieByIdAsync(id);
-            if (movie == null) throw new MovieNotFoundException();
+            if (movie == null)
+                return Result.Fail(new NotFoundError("Movie not found."));
 
             movie.Status = MovieStatus.Offline;
             movie.DeletedAt = DateTime.Now;
             _movieRepository.DeleteMovieAsync(movie);
+
+            return Result.Ok();
         }
     }
 }

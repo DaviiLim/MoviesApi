@@ -1,15 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Domain.DTOs.Auth;
-using Domain.DTOs.User;
 using Domain.Interfaces.Services;
+using MoviesApi.Controllers;
 
 namespace Domain.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class AuthController : ControllerBase
+    public class AuthController : BaseApiController
     {
         private readonly IAuthService _authService;
 
@@ -23,7 +22,7 @@ namespace Domain.Controllers
         public async Task<IActionResult> Login([FromBody] AuthLoginRequest request, CancellationToken cancellationToken)
         {
             var token = await _authService.LoginAsync(request);
-            return Ok(token);
+            return HandleResult(token);
         }
 
         [AllowAnonymous]
@@ -32,7 +31,7 @@ namespace Domain.Controllers
         {
             await _authService.RegisterAsync(authRegisterRequest);
             
-            return  Ok();
+            return NoContent();
         }
     }
 }

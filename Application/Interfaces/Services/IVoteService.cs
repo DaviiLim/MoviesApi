@@ -1,11 +1,12 @@
 ﻿using Domain.DTOs.Vote;
 using Domain.Entities;
+using FluentResults;
 
 namespace Domain.Interfaces.Services
 {
     public interface IVoteService
     {
-        void VoteAsync(int userId, CreateVoteRequest request);
-        void DeleteVoteAsync(int userId, int id);
+        Task<Result> VoteAsync(int userId, CreateVoteRequest request);
+        Task<Result> DeleteVoteAsync(int userId, int movieId);
     }
 }

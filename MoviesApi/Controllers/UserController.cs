@@ -3,13 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 using Domain.DTOs.User;
 using Domain.Interfaces.Services;
 using Domain.DTOs.Pagination;
+using MoviesApi.Controllers;
 
 namespace Domain.Controllers
 {
     [ApiController]
     [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
-    public class UserController : ControllerBase
+    public class UserController : BaseApiController
     {
         private readonly IUserService _userService;
 
@@ -22,41 +23,41 @@ namespace Domain.Controllers
         public async Task<IActionResult> CreateUserAsync(CreateUserRequest createUserRequest, CancellationToken cancellationToken)
         {
             var user = await _userService.CreateUserAsync(createUserRequest);
-            return Ok();
+            return HandleResult(user);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserByIdAsync(int id, CancellationToken cancellationToken)
         {
             var user = await _userService.GetUserByIdAsync(id);
-            return Ok();
+            return HandleResult(user);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllUsersAsync([FromQuery] PaginationParams paginationParams, CancellationToken cancellationToken)
         {
             var users = await _userService.GetAllUsersAsync(paginationParams);
-            return Ok(users);
+            return HandleResult(users);
         }
 
         [HttpGet("email")]
         public async Task<IActionResult> GetUserByEmailAsync(string email, CancellationToken cancellationToken)
         {
             var user = await _userService.GetUserByEmailAsync(email);
-            return Ok(user);
+            return HandleResult(user);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUserAsync(int id, UpdateUser updateUser, CancellationToken cancellationToken)
         {
-            _userService.UpdateUserAsync(id, updateUser);
+            await _userService.UpdateUserAsync(id, updateUser);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUserAsync(int id, CancellationToken cancellationToken)
         {
-            _userService.DeleteUserAsync(id);
+            await _userService.DeleteUserAsync(id);
             return NoContent(); 
         }
     }

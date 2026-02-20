@@ -1,11 +1,11 @@
-﻿using Domain.DTOs.Movie;
-using Domain.DTOs.Pagination;
+﻿using Domain.DTOs.Pagination;
 using Domain.DTOs.User;
 using Domain.Enums.User;
-using Domain.Exceptions;
+using Domain.Errors;
 using Domain.Interfaces.Mappers;
 using Domain.Interfaces.Repositories;
 using Domain.Interfaces.Services;
+using FluentResults;
 
 namespace Domain.Services
 {
@@ -21,11 +21,12 @@ namespace Domain.Services
         }
 
         //    ---------- Para adms criarem usuários
-        public async Task<UserResponse> CreateUserAsync(CreateUserRequest createUserRequest)
+        public async Task<Result<UserResponse>> CreateUserAsync(CreateUserRequest createUserRequest)
         {
             var userEmail = await _userRepository.GetUserByEmailAsync(createUserRequest.Email);
 
-            if (userEmail != null) throw new EmailAlreadyExistsException();
+            if (userEmail != null) 
+                return Result.Fail(new ConflictError("Email already exists."));
 
             string password = BCrypt.Net.BCrypt.HashPassword(createUserRequest.Password);
 
@@ -35,10 +36,12 @@ namespace Domain.Services
 
             await _userRepository.CreateUserAsync(user);
 
-            return _mapping.ToResponse(user);
+            var userResponse = _mapping.ToResponse(user);
+
+            return Result.Ok(userResponse);
         }
 
-        public async Task<PaginationResponse<UserResponse>> GetAllUsersAsync(PaginationParams paginationParams)
+        public async Task<Result<PaginationResponse<UserResponse>>> GetAllUsersAsync(PaginationParams paginationParams)
         {
             var movies = await _userRepository
                 .GetAllUsersAsync(paginationParams);
@@ -51,45 +54,58 @@ namespace Domain.Services
                 Items = movies.Items.Select( u => _mapping.ToResponse(u) ).ToList()
             };
 
-            return response;
+            return Result.Ok(response);
         }
 
-        public async Task<UserResponse> GetUserByIdAsync(int id)
+        public async Task<Result<UserResponse>> GetUserByIdAsync(int id)
         {
-            var userResponse = await _userRepository.GetUserByIdAsync(id);
-            if (userResponse == null) throw new UserNotFoundException();
-            return _mapping.ToResponse(userResponse);
+            var user = await _userRepository.GetUserByIdAsync(id);
+            if (user == null)
+                return Result.Fail(new NotFoundError("User not Found"));
+
+            var userResponse = _mapping.ToResponse(user);
+
+            return Result.Ok(userResponse);
         }
 
 
-        public async Task<UserResponse> GetUserByEmailAsync(string email)
+        public async Task<Result<UserResponse>> GetUserByEmailAsync(string email)
         {
             var user = await _userRepository.GetUserByEmailAsync(email);
-            if (user == null) throw new UserNotFoundException();
+            if (user == null)
+                return Result.Fail(new NotFoundError("User not Found"));
 
-            return _mapping.ToResponse(user);
+            var userResponse = _mapping.ToResponse(user);
+
+            return Result.Ok(userResponse);
         }
 
-        public async void UpdateUserAsync(int id, UpdateUser updateUser)
+        public async Task<Result> UpdateUserAsync(int id, UpdateUser updateUser)
         {
             var user = await _userRepository.GetUserByIdAsync(id);
 
-            if (user == null) throw new UserNotFoundException();
+            if (user == null)
+                return Result.Fail(new NotFoundError("User not Found"));
 
             user.Name = updateUser.Name;
 
             _userRepository.UpdateUserAsync(user);
+
+            return Result.Ok();
         }
 
-        public async void DeleteUserAsync(int id)
+        public async Task<Result> DeleteUserAsync(int id)
         {
             var user = await _userRepository.GetUserByIdAsync(id);
 
-            if (user == null) throw new UserNotFoundException();
+            if (user == null)
+                return Result.Fail(new NotFoundError("User not Found"));
 
             user.Status = UserStatus.Inactive;
 
             _userRepository.DeleteUserAsync(user);
+
+            return Result.Ok();
         }
     }
 }

@@ -4,6 +4,7 @@ using Domain.DTOs.Pagination;
 using Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MoviesApi.Controllers;
 using MoviesApi.Extensions;
 using System.Security.Claims;
 
@@ -12,30 +13,29 @@ namespace Domain.Controllers
 
     [ApiController]
     [Route("api/[controller]")]
-    public class MovieController : ControllerBase
+    public class MovieController : BaseApiController
     {
         private readonly IMovieService _movieService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public MovieController(IMovieService movieService, IHttpContextAccessor httpContextAccessor)
         {
             _movieService = movieService;
-            _httpContextAccessor = httpContextAccessor;
         }
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateMovieAsync(CreateMovieRequest createMovieRequest, CancellationToken cancellationToken)
         {
-            return Ok(await _movieService.CreateMovieAsync(createMovieRequest));
+            var movie = await _movieService.CreateMovieAsync(createMovieRequest);
+            return HandleResult(movie);
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpGet]
-        [Route("{id}")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetMovieByIdAsync(int id, CancellationToken cancellationToken)
         {
-            return Ok(await _movieService.GetMovieByIdAsync(id));
+            var movie = await _movieService.GetMovieByIdAsync(id);
+            return HandleResult(movie);
         }
 
         [HttpGet]
@@ -44,36 +44,34 @@ namespace Domain.Controllers
             [FromQuery] string? title, string? genre, string? directors, string? cast,
             CancellationToken cancellationToken
             )
-
         {
-            return Ok(await _movieService.GetAllMovieAsync(paginationParams,title, genre, directors, cast));
+            var movies = await _movieService.GetAllMovieAsync(paginationParams, title, genre, directors, cast);
+            return HandleResult(movies);
         }
 
         [Authorize]
-        [HttpGet]
-        [Route("voted/")]
+        [HttpGet("voted")]
         public async Task<IActionResult> GetUserVotedMovies(CancellationToken cancellationToken)
         {
             var userId = User.GetUserIdFromToken();
-            return Ok(await _movieService.GetAllUserMovies(userId));
+            var userVotedMovies = await _movieService.GetAllMoviesVotedByUser(userId);
+            return HandleResult(userVotedMovies);
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpPut]
-        [Route("{id}")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateMovieAsync(int id, UpdateMovie updateMovie, CancellationToken cancellationToken)
         {
-            _movieService.UpdateMovieAsync(id, updateMovie);
-            return Ok();
+            await _movieService.UpdateMovieAsync(id, updateMovie);
+            return NoContent();
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpDelete]
-        [Route("{id}")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMovieAsync(int id, CancellationToken cancellationToken)
         {
-            _movieService.DeleteMovieAsync(id);
-            return Ok();
+            await _movieService.DeleteMovieAsync(id);
+            return NoContent();
         }
 
     }

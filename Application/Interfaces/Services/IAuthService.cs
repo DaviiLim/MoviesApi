@@ -1,10 +1,11 @@
 ﻿using Domain.DTOs.Auth;
+using FluentResults;
 
 namespace Domain.Interfaces.Services
 {
     public interface IAuthService
     {
-        public Task<string> LoginAsync(AuthLoginRequest authLoginRequest);
-        public Task<bool> RegisterAsync(AuthRegisterRequest authRegisterRequest);
+        public Task<Result<string>> LoginAsync(AuthLoginRequest authLoginRequest);
+        public Task<Result> RegisterAsync(AuthRegisterRequest authRegisterRequest);
     }
 }
