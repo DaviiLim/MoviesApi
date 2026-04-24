@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Domain.DTOs.Vote
+namespace Application.DTOs.Vote
 {
     public class CreateVoteRequest
     {

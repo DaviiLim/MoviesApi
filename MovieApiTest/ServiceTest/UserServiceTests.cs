@@ -1,10 +1,11 @@
-﻿using Domain.DTOs.Pagination;
+﻿using Application.DTOs.User;
+using Application.Interfaces.Mappers;
+using Application.Services;
+using Domain.DTOs.Pagination;
 using Domain.DTOs.User;
 using Domain.Entities;
 using Domain.Enums.User;
-using Domain.Interfaces.Mappers;
 using Domain.Interfaces.Repositories;
-using Domain.Services;
 using FluentAssertions;
 using NSubstitute;
 

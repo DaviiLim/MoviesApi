@@ -5,12 +5,11 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Domain.Interfaces.Mappers;
-using Domain.Interfaces.Services;
-using Domain.Mapping;
-using Domain.Services;
 using System.Text;
 using Infrastructure.Data;
+using Application.Interfaces.Mappers;
+using Application.Interfaces.Services;
+using Application.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
 

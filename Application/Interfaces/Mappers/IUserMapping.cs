@@ -1,9 +1,9 @@
-﻿using Domain.DTOs.Auth;
-using Domain.DTOs.User;
+﻿using Application.DTOs.Auth;
+using Application.DTOs.User;
 using Domain.DTOs.User.Jwt;
 using Domain.Entities;
 
-namespace Domain.Interfaces.Mappers
+namespace Application.Interfaces.Mappers
 {
     public interface IUserMapping
     {

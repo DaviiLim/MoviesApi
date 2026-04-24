@@ -1,10 +1,10 @@
-﻿using Domain.DTOs.Auth;
-using Domain.DTOs.User;
+﻿using Application.DTOs.Auth;
+using Application.DTOs.User;
+using Application.Interfaces.Mappers;
 using Domain.DTOs.User.Jwt;
 using Domain.Entities;
-using Domain.Interfaces.Mappers;
 
-namespace Domain.Mapping
+namespace Application.Mapping
 {
     public class UserMapping : IUserMapping
     {

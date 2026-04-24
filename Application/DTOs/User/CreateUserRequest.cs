@@ -1,8 +1,7 @@
 ﻿using Domain.Enums.User;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Domain.DTOs.User
+namespace Application.DTOs.User
 {
     public class CreateUserRequest
     {

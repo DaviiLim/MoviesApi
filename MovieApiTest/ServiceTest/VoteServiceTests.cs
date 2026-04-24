@@ -1,10 +1,10 @@
 ﻿
-using Domain.DTOs.Vote;
+using Application.DTOs.Vote;
+using Application.Interfaces.Mappers;
+using Application.Services;
 using Domain.Entities;
 using Domain.Enums.Vote;
-using Domain.Interfaces.Mappers;
 using Domain.Interfaces.Repositories;
-using Domain.Services;
 using FluentAssertions;
 using NSubstitute;
 

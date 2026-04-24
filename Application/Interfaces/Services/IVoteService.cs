@@ -1,8 +1,7 @@
-﻿using Domain.DTOs.Vote;
-using Domain.Entities;
+﻿using Application.DTOs.Vote;
 using FluentResults;
 
-namespace Domain.Interfaces.Services
+namespace Application.Interfaces.Services
 {
     public interface IVoteService
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Domain.DTOs.Auth;
-using Domain.Interfaces.Services;
+using Application.DTOs.Auth;
+using Application.Interfaces.Services;
 
 namespace Api.Controllers
 {

@@ -1,8 +1,8 @@
-﻿using Domain.DTOs.Auth;
-using Domain.DTOs.User;
+﻿using Application.DTOs.Auth;
+using Application.DTOs.User;
 using FluentResults;
 
-namespace Domain.Interfaces.Services
+namespace Application.Interfaces.Services
 {
     public interface IAuthService
     {

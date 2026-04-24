@@ -2,7 +2,7 @@
 using Domain.DTOs.User.Jwt;
 using Domain.Entities;
 
-namespace Domain.Interfaces.Services
+namespace Application.Interfaces.Services
 {
     public interface IJwtTokenService
     {

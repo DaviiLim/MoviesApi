@@ -1,6 +1,6 @@
 ﻿using Api.Extensions;
-using Domain.DTOs.Vote;
-using Domain.Interfaces.Services;
+using Application.DTOs.Vote;
+using Application.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;

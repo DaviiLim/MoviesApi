@@ -1,9 +1,8 @@
-﻿using Domain.DTOs.Pagination;
-using Domain.DTOs.User;
-using Domain.Entities;
+﻿using Application.DTOs.User;
+using Domain.DTOs.Pagination;
 using FluentResults;
 
-namespace Domain.Interfaces.Services
+namespace Application.Interfaces.Services
 {
     public interface IUserService
     {

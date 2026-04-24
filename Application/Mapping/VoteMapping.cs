@@ -1,9 +1,9 @@
-﻿using Domain.DTOs.Movie;
-using Domain.DTOs.Vote;
+﻿using Application.DTOs.Movie;
+using Application.DTOs.Vote;
+using Application.Interfaces.Mappers;
 using Domain.Entities;
-using Domain.Interfaces.Mappers;
 
-namespace Domain.Mapping
+namespace Application.Mapping
 {
     public class VoteMapping : IVoteMapping
     {

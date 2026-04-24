@@ -1,6 +1,6 @@
-﻿using Domain.DTOs.Movie;
+﻿using Application.DTOs.Movie;
 
-namespace Domain.DTOs.Vote
+namespace Application.DTOs.Vote
 {
     public class VoteResponse
     {

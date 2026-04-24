@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Interfaces.Mappers;
+using Application.Services;
 using Domain.DTOs.Movie;
 using Domain.DTOs.Pagination;
 using Domain.Entities;
 using Domain.Enums.Movie;
-using Domain.Interfaces.Mappers;
 using Domain.Interfaces.Repositories;
-using Domain.Services;
 using FluentAssertions;
 using NSubstitute;
 using Xunit;

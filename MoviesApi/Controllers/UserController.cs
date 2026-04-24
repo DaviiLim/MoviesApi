@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Domain.DTOs.User;
-using Domain.Interfaces.Services;
 using Domain.DTOs.Pagination;
+using Application.DTOs.User;
+using Application.Interfaces.Services;
 
 namespace Api.Controllers
 {

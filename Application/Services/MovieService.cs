@@ -1,15 +1,15 @@
 ﻿using Domain.Interfaces.Repositories;
-using Domain.DTOs.Movie;
 using Domain.Entities;
 using Domain.Enums.Movie;
-using Domain.Interfaces.Mappers;
-using Domain.Interfaces.Services;
 using System.Data;
 using Domain.DTOs.Pagination;
 using FluentResults;
 using Domain.Errors;
+using Application.DTOs.Movie;
+using Application.Interfaces.Mappers;
+using Application.Interfaces.Services;
 
-namespace Domain.Services
+namespace Application.Services
 {
     public class MovieService : IMovieService
     {
@@ -88,7 +88,7 @@ namespace Domain.Services
             return Result.Ok(MovieDetailsResponse);
         }
 
-        public async Task<Result<IEnumerable<MovieTitleResponse>>> GetAllMoviesVotedByUser(int userId) 
+        public async Task<Result<IEnumerable<MovieTitleResponse>>> GetAllMoviesVotedByUser(int userId)
         {
             var movies = await _movieRepository.GetAllMoviesVotedByUser(userId);
             var movieTitleResponse = movies.Select(m =>
@@ -104,7 +104,7 @@ namespace Domain.Services
                 return _mapping.ToMovieTitleResponse(m, averageScore, totalVotes);
             });
 
-                return Result.Ok(movieTitleResponse);
+            return Result.Ok(movieTitleResponse);
         }
 
         public async Task<Result> UpdateMovieAsync(int id, UpdateMovie updateMovie)

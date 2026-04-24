@@ -1,19 +1,18 @@
 ﻿using Domain.Interfaces.Repositories;
-using Domain.DTOs.Auth;
-using Domain.Interfaces.Mappers;
-using Domain.Interfaces.Services;
 using FluentResults;
 using Domain.Errors;
-using Domain.Entities;
-using Domain.DTOs.User;
+using Application.DTOs.Auth;
+using Application.DTOs.User;
+using Application.Interfaces.Mappers;
+using Application.Interfaces.Services;
 
-namespace Domain.Services
+namespace Application.Services
 {
     public class AuthService : IAuthService
     {
         private readonly IJwtTokenService _tokenService;
-        private readonly IUserRepository _userRepository;                
-        private readonly IUserMapping _mapping;                              
+        private readonly IUserRepository _userRepository;
+        private readonly IUserMapping _mapping;
 
         public AuthService(IJwtTokenService tokenService, IUserRepository userRepository, IUserMapping mapping)
         {
@@ -50,7 +49,7 @@ namespace Domain.Services
             string password = BCrypt.Net.BCrypt.HashPassword(authRegisterRequest.Password);
 
             authRegisterRequest.Password = password;
-            
+
             var entityUser = await _userRepository.CreateUserAsync(_mapping.AuthRegisterRequestToEntity(authRegisterRequest));
             var userResponse = _mapping.ToResponse(entityUser);
 

@@ -1,13 +1,13 @@
-﻿using Domain.DTOs.Pagination;
-using Domain.DTOs.User;
+﻿using Application.DTOs.User;
+using Application.Interfaces.Mappers;
+using Application.Interfaces.Services;
+using Domain.DTOs.Pagination;
 using Domain.Enums.User;
 using Domain.Errors;
-using Domain.Interfaces.Mappers;
 using Domain.Interfaces.Repositories;
-using Domain.Interfaces.Services;
 using FluentResults;
 
-namespace Domain.Services
+namespace Application.Services
 {
     public class UserService : IUserService
     {
@@ -25,7 +25,7 @@ namespace Domain.Services
         {
             var userEmail = await _userRepository.GetUserByEmailAsync(createUserRequest.Email);
 
-            if (userEmail != null) 
+            if (userEmail != null)
                 return Result.Fail(new ConflictError("Email already exists."));
 
             string password = BCrypt.Net.BCrypt.HashPassword(createUserRequest.Password);
@@ -51,7 +51,7 @@ namespace Domain.Services
                 PageNumber = movies.PageNumber,
                 PageSize = movies.PageSize,
                 TotalItems = movies.TotalItems,
-                Items = movies.Items.Select( u => _mapping.ToResponse(u) ).ToList()
+                Items = movies.Items.Select(u => _mapping.ToResponse(u)).ToList()
             };
 
             return Result.Ok(response);

@@ -1,6 +1,6 @@
 ﻿using Domain.Enums;
 
-namespace Domain.DTOs.User
+namespace Application.DTOs.User
 {
     public class UserResponse
     {

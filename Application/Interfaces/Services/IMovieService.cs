@@ -1,9 +1,8 @@
-﻿using Domain.DTOs.Movie;
+﻿using Application.DTOs.Movie;
 using Domain.DTOs.Pagination;
-using Domain.Entities;
 using FluentResults;
 
-namespace Domain.Interfaces.Services
+namespace Application.Interfaces.Services
 {
     public interface IMovieService
     {

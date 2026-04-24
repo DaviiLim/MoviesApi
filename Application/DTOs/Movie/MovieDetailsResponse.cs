@@ -1,4 +1,4 @@
-﻿namespace Domain.DTOs.Movie
+﻿namespace Application.DTOs.Movie
 {
     public class MovieDetailsResponse
     {

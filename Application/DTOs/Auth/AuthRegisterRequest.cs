@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 
-namespace Domain.DTOs.Auth
+namespace Application.DTOs.Auth
 {
     public class AuthRegisterRequest
     {

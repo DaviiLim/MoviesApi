@@ -1,11 +1,11 @@
 ﻿using System.Threading.Tasks;
-using Domain.DTOs.Auth;
+using Application.DTOs.Auth;
+using Application.Interfaces.Mappers;
+using Application.Interfaces.Services;
+using Application.Services;
 using Domain.DTOs.User.Jwt;
 using Domain.Entities;
-using Domain.Interfaces.Mappers;
 using Domain.Interfaces.Repositories;
-using Domain.Interfaces.Services;
-using Domain.Services;
 using FluentAssertions;
 using NSubstitute;
 using Xunit;

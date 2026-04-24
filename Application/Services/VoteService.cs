@@ -1,14 +1,12 @@
-﻿using Azure.Core;
-using Domain.DTOs.Vote;
-using Domain.Entities;
+﻿using Application.DTOs.Vote;
+using Application.Interfaces.Mappers;
+using Application.Interfaces.Services;
 using Domain.Enums.Vote;
 using Domain.Errors;
-using Domain.Interfaces.Mappers;
 using Domain.Interfaces.Repositories;
-using Domain.Interfaces.Services;
 using FluentResults;
 
-namespace Domain.Services
+namespace Application.Services
 {
     public class VoteService : IVoteService
     {
@@ -27,7 +25,7 @@ namespace Domain.Services
         public async Task<Result> VoteAsync(int userId, CreateVoteRequest request)
         {
             var user = await _userRepository.GetUserByIdAsync(userId);
-                if (user == null)
+            if (user == null)
                 return Result.Fail(new NotFoundError("User not found."));
 
             var movie = await _movieRepository.GetMovieByIdAsync(request.MovieId);
@@ -54,7 +52,7 @@ namespace Domain.Services
             return Result.Ok();
         }
 
-        public async Task<Result> DeleteVoteAsync(int userId,int movieId)
+        public async Task<Result> DeleteVoteAsync(int userId, int movieId)
         {
             var user = await _userRepository.GetUserByIdAsync(userId);
             if (user == null)

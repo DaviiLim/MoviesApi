@@ -1,8 +1,8 @@
-﻿using Domain.DTOs.Movie;
+﻿using Application.DTOs.Movie;
 using Domain.Entities;
 
 
-namespace Domain.Interfaces.Mappers
+namespace Application.Interfaces.Mappers
 {
     public interface IMovieMapping
     {

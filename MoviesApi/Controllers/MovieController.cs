@@ -1,7 +1,7 @@
 ﻿using Api.Extensions;
-using Domain.DTOs.Movie;
+using Application.DTOs.Movie;
+using Application.Interfaces.Services;
 using Domain.DTOs.Pagination;
-using Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

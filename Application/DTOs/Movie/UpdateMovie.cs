@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Domain.DTOs.Movie
+namespace Application.DTOs.Movie
 {
     public class UpdateMovie
     {
