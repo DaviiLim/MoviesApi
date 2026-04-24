@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace MoviesApi.Extensions
+namespace Api.Extensions
 {
     public static class TokenClaimHelper
     {
@@ -13,5 +13,5 @@ namespace MoviesApi.Extensions
             }
             return int.Parse(claim.Value);
         }
-    }   
+    }
 }

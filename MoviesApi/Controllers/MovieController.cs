@@ -1,14 +1,11 @@
-﻿
+﻿using Api.Extensions;
 using Domain.DTOs.Movie;
 using Domain.DTOs.Pagination;
 using Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MoviesApi.Controllers;
-using MoviesApi.Extensions;
-using System.Security.Claims;
 
-namespace Domain.Controllers
+namespace Api.Controllers
 {
 
     [ApiController]

@@ -1,13 +1,13 @@
-﻿using Domain.DTOs.Vote;
+﻿using Api.Extensions;
+using Domain.DTOs.Vote;
 using Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using MoviesApi.Extensions;
 using System.Reflection.Metadata.Ecma335;
 using System.Security.Claims;
 
-namespace Domain.Controllers
+namespace Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

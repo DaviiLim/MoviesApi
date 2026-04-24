@@ -3,9 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Domain.DTOs.User;
 using Domain.Interfaces.Services;
 using Domain.DTOs.Pagination;
-using MoviesApi.Controllers;
 
-namespace Domain.Controllers
+namespace Api.Controllers
 {
     [ApiController]
     [Authorize(Roles = "Admin")]
@@ -58,7 +57,7 @@ namespace Domain.Controllers
         public async Task<IActionResult> DeleteUserAsync(int id, CancellationToken cancellationToken)
         {
             await _userService.DeleteUserAsync(id);
-            return NoContent(); 
+            return NoContent();
         }
     }
 }

@@ -2,7 +2,7 @@
 using FluentResults;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MoviesApi.Controllers
+namespace Api.Controllers
 {
     [ApiController]
     public class BaseApiController : ControllerBase

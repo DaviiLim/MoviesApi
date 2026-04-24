@@ -2,9 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Domain.DTOs.Auth;
 using Domain.Interfaces.Services;
-using MoviesApi.Controllers;
 
-namespace Domain.Controllers
+namespace Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -27,10 +26,10 @@ namespace Domain.Controllers
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody]AuthRegisterRequest authRegisterRequest, CancellationToken cancellationToken)
+        public async Task<IActionResult> Register([FromBody] AuthRegisterRequest authRegisterRequest, CancellationToken cancellationToken)
         {
             var user = await _authService.RegisterAsync(authRegisterRequest);
-            
+
             return HandleResult(user);
         }
     }
