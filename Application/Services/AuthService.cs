@@ -44,7 +44,7 @@ namespace Application.Services
                 return Result.Fail(new ConflictError("Email already exists"));
 
             if (authRegisterRequest.Password != authRegisterRequest.ConfirmPassword)
-                return Result.Fail(new UnauthorizedError("Invalid credentials."));
+                return Result.Fail(new ValidationError("Password and Confirm Password do not match."));
 
             string password = BCrypt.Net.BCrypt.HashPassword(authRegisterRequest.Password);
 
