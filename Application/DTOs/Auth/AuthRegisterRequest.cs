@@ -12,7 +12,7 @@ namespace Application.DTOs.Auth
         [EmailAddress]
         public required string Email { get; set; }
 
-3        [Required(ErrorMessage = "Password is required")]
+        [Required(ErrorMessage = "Password is required")]
         [PasswordPropertyText]
         [StringLength(255, ErrorMessage = "Must be between 5 and 255 characters", MinimumLength = 5)]
         public required string Password { get; set; }
