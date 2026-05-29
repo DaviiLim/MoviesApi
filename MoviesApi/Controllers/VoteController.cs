@@ -15,7 +15,7 @@ namespace Api.Controllers
     {
         private readonly IVoteService _voteService;
 
-        public VoteController(IVoteService voteService, IHttpContextAccessor httpContextAccessor)
+        public VoteController(IVoteService voteService)
         {
             _voteService = voteService;
         }

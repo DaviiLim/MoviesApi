@@ -14,7 +14,7 @@ namespace Api.Controllers
     {
         private readonly IMovieService _movieService;
 
-        public MovieController(IMovieService movieService, IHttpContextAccessor httpContextAccessor)
+        public MovieController(IMovieService movieService)
         {
             _movieService = movieService;
         }
