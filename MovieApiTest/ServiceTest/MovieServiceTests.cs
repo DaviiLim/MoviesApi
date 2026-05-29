@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.Interfaces.Mappers;
 using Application.Services;
-using Domain.DTOs.Movie;
+using Application.DTOs.Movie;
 using Domain.DTOs.Pagination;
 using Domain.Entities;
 using Domain.Enums.Movie;

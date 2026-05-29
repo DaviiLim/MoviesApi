@@ -1,4 +1,4 @@
-﻿using Domain.Interfaces.Repositories;
+using Domain.Interfaces.Repositories;
 using Domain.Entities;
 using Domain.Enums.Movie;
 using System.Data;
@@ -16,21 +16,20 @@ namespace Application.Services
         private readonly IMovieRepository _movieRepository;
         private readonly IMovieMapping _mapping;
 
-
         public MovieService(IMovieRepository movieRepository, IMovieMapping movieMapping)
         {
             _movieRepository = movieRepository;
             _mapping = movieMapping;
         }
 
-        public async Task<Result<MovieDetailsResponse>> CreateMovieAsync(CreateMovieRequest createMovieRequest)
+        public async Task<Result<MovieDetailsResponse>> CreateMovieAsync(CreateMovieRequest createMovieRequest, CancellationToken cancellationToken = default)
         {
-            var movieByTitle = await _movieRepository.GetMovieByTitleAsync(createMovieRequest.Title);
+            var movieByTitle = await _movieRepository.GetMovieByTitleAsync(createMovieRequest.Title, cancellationToken);
             if (movieByTitle != null)
                 return Result.Fail(new NotFoundError("This Title is already in use."));
 
             var movie = _mapping.CreateMovieRequestToEntity(createMovieRequest);
-            await _movieRepository.CreateMovieAsync(movie);
+            await _movieRepository.CreateMovieAsync(movie, cancellationToken);
 
             var movieDetailsResponse = _mapping.ToDetailsResponse(movie, 0, 0);
             return Result.Ok(movieDetailsResponse);
@@ -41,10 +40,11 @@ namespace Application.Services
             string? title,
             string? genre,
             string? directors,
-            string? cast)
+            string? cast,
+            CancellationToken cancellationToken = default)
         {
             var movies = await _movieRepository
-                .GetAllMovieAsync(paginationParams, title, genre, directors, cast);
+                .GetAllMovieAsync(paginationParams, title, genre, directors, cast, cancellationToken);
 
             var movieTitleResponse = new PaginationResponse<MovieTitleResponse>
             {
@@ -68,9 +68,9 @@ namespace Application.Services
             return Result.Ok(movieTitleResponse);
         }
 
-        public async Task<Result<MovieDetailsResponse>> GetMovieByIdAsync(int id)
+        public async Task<Result<MovieDetailsResponse>> GetMovieByIdAsync(int id, CancellationToken cancellationToken = default)
         {
-            var movie = await _movieRepository.GetMovieByIdAsync(id);
+            var movie = await _movieRepository.GetMovieByIdAsync(id, cancellationToken);
 
             if (movie == null)
                 return Result.Fail(new NotFoundError("Movie not found."));
@@ -88,9 +88,9 @@ namespace Application.Services
             return Result.Ok(MovieDetailsResponse);
         }
 
-        public async Task<Result<IEnumerable<MovieTitleResponse>>> GetAllMoviesVotedByUser(int userId)
+        public async Task<Result<IEnumerable<MovieTitleResponse>>> GetAllMoviesVotedByUser(int userId, CancellationToken cancellationToken = default)
         {
-            var movies = await _movieRepository.GetAllMoviesVotedByUser(userId);
+            var movies = await _movieRepository.GetAllMoviesVotedByUser(userId, cancellationToken);
             var movieTitleResponse = movies.Select(m =>
             {
                 var votes = m.Votes ?? new List<Vote>();
@@ -107,9 +107,9 @@ namespace Application.Services
             return Result.Ok(movieTitleResponse);
         }
 
-        public async Task<Result> UpdateMovieAsync(int id, UpdateMovie updateMovie)
+        public async Task<Result> UpdateMovieAsync(int id, UpdateMovie updateMovie, CancellationToken cancellationToken = default)
         {
-            var movie = await _movieRepository.GetMovieByIdAsync(id);
+            var movie = await _movieRepository.GetMovieByIdAsync(id, cancellationToken);
 
             if (movie == null)
                 return Result.Fail(new NotFoundError("Movie not found."));
@@ -125,23 +125,22 @@ namespace Application.Services
 
             movie.UpdatedAt = DateTime.Now;
 
-            await _movieRepository.UpdateMovieAsync(movie);
+            await _movieRepository.UpdateMovieAsync(movie, cancellationToken);
 
             return Result.Ok();
         }
 
-        public async Task<Result> DeleteMovieAsync(int id)
+        public async Task<Result> DeleteMovieAsync(int id, CancellationToken cancellationToken = default)
         {
-            var movie = await _movieRepository.GetMovieByIdAsync(id);
+            var movie = await _movieRepository.GetMovieByIdAsync(id, cancellationToken);
             if (movie == null)
                 return Result.Fail(new NotFoundError("Movie not found."));
 
             movie.Status = MovieStatus.Offline;
             movie.DeletedAt = DateTime.Now;
-            await _movieRepository.DeleteMovieAsync(movie);
+            await _movieRepository.DeleteMovieAsync(movie, cancellationToken);
 
             return Result.Ok();
         }
     }
 }
-

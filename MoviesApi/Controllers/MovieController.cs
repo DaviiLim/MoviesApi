@@ -23,7 +23,7 @@ namespace Api.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateMovieAsync(CreateMovieRequest createMovieRequest, CancellationToken cancellationToken)
         {
-            var movie = await _movieService.CreateMovieAsync(createMovieRequest);
+            var movie = await _movieService.CreateMovieAsync(createMovieRequest, cancellationToken);
             return HandleResult(movie);
         }
 
@@ -31,7 +31,7 @@ namespace Api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetMovieByIdAsync(int id, CancellationToken cancellationToken)
         {
-            var movie = await _movieService.GetMovieByIdAsync(id);
+            var movie = await _movieService.GetMovieByIdAsync(id, cancellationToken);
             return HandleResult(movie);
         }
 
@@ -42,7 +42,7 @@ namespace Api.Controllers
             CancellationToken cancellationToken
             )
         {
-            var movies = await _movieService.GetAllMovieAsync(paginationParams, title, genre, directors, cast);
+            var movies = await _movieService.GetAllMovieAsync(paginationParams, title, genre, directors, cast, cancellationToken);
             return HandleResult(movies);
         }
 
@@ -51,7 +51,7 @@ namespace Api.Controllers
         public async Task<IActionResult> GetUserVotedMovies(CancellationToken cancellationToken)
         {
             var userId = User.GetUserIdFromToken();
-            var userVotedMovies = await _movieService.GetAllMoviesVotedByUser(userId);
+            var userVotedMovies = await _movieService.GetAllMoviesVotedByUser(userId, cancellationToken);
             return HandleResult(userVotedMovies);
         }
 
@@ -59,7 +59,7 @@ namespace Api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateMovieAsync(int id, UpdateMovie updateMovie, CancellationToken cancellationToken)
         {
-            await _movieService.UpdateMovieAsync(id, updateMovie);
+            await _movieService.UpdateMovieAsync(id, updateMovie, cancellationToken);
             return NoContent();
         }
 
@@ -67,7 +67,7 @@ namespace Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMovieAsync(int id, CancellationToken cancellationToken)
         {
-            await _movieService.DeleteMovieAsync(id);
+            await _movieService.DeleteMovieAsync(id, cancellationToken);
             return NoContent();
         }
 

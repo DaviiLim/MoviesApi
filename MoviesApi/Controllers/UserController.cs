@@ -21,42 +21,42 @@ namespace Api.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateUserAsync(CreateUserRequest createUserRequest, CancellationToken cancellationToken)
         {
-            var user = await _userService.CreateUserAsync(createUserRequest);
+            var user = await _userService.CreateUserAsync(createUserRequest, cancellationToken);
             return HandleResult(user);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserByIdAsync(int id, CancellationToken cancellationToken)
         {
-            var user = await _userService.GetUserByIdAsync(id);
+            var user = await _userService.GetUserByIdAsync(id, cancellationToken);
             return HandleResult(user);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllUsersAsync([FromQuery] PaginationParams paginationParams, CancellationToken cancellationToken)
         {
-            var users = await _userService.GetAllUsersAsync(paginationParams);
+            var users = await _userService.GetAllUsersAsync(paginationParams, cancellationToken);
             return HandleResult(users);
         }
 
         [HttpGet("email")]
         public async Task<IActionResult> GetUserByEmailAsync(string email, CancellationToken cancellationToken)
         {
-            var user = await _userService.GetUserByEmailAsync(email);
+            var user = await _userService.GetUserByEmailAsync(email, cancellationToken);
             return HandleResult(user);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUserAsync(int id, UpdateUser updateUser, CancellationToken cancellationToken)
         {
-            await _userService.UpdateUserAsync(id, updateUser);
+            await _userService.UpdateUserAsync(id, updateUser, cancellationToken);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUserAsync(int id, CancellationToken cancellationToken)
         {
-            await _userService.DeleteUserAsync(id);
+            await _userService.DeleteUserAsync(id, cancellationToken);
             return NoContent();
         }
     }

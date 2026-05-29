@@ -1,4 +1,4 @@
-﻿using Domain.Interfaces.Repositories;
+using Domain.Interfaces.Repositories;
 using FluentResults;
 using Domain.Errors;
 using Application.DTOs.Auth;
@@ -21,9 +21,9 @@ namespace Application.Services
             _mapping = mapping;
         }
 
-        public async Task<Result<string>> LoginAsync(AuthLoginRequest authLoginRequest)
+        public async Task<Result<string>> LoginAsync(AuthLoginRequest authLoginRequest, CancellationToken cancellationToken = default)
         {
-            var user = await _userRepository.GetUserByEmailAsync(authLoginRequest.Email);
+            var user = await _userRepository.GetUserByEmailAsync(authLoginRequest.Email, cancellationToken);
             if (user == null)
                 return Result.Fail(new NotFoundError("User not found."));
 
@@ -36,9 +36,9 @@ namespace Application.Services
             return Result.Ok(token);
         }
 
-        public async Task<Result<UserResponse>> RegisterAsync(AuthRegisterRequest authRegisterRequest)
+        public async Task<Result<UserResponse>> RegisterAsync(AuthRegisterRequest authRegisterRequest, CancellationToken cancellationToken = default)
         {
-            var user = await _userRepository.GetUserByEmailAsync(authRegisterRequest.Email);
+            var user = await _userRepository.GetUserByEmailAsync(authRegisterRequest.Email, cancellationToken);
 
             if (user != null)
                 return Result.Fail(new ConflictError("Email already exists"));
@@ -50,7 +50,7 @@ namespace Application.Services
 
             authRegisterRequest.Password = password;
 
-            var entityUser = await _userRepository.CreateUserAsync(_mapping.AuthRegisterRequestToEntity(authRegisterRequest));
+            var entityUser = await _userRepository.CreateUserAsync(_mapping.AuthRegisterRequestToEntity(authRegisterRequest), cancellationToken);
             var userResponse = _mapping.ToResponse(entityUser);
 
             return Result.Ok(userResponse);

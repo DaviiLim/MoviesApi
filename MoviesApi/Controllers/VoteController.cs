@@ -25,7 +25,7 @@ namespace Api.Controllers
         public async Task<IActionResult> VoteAsync(CreateVoteRequest createVoteRequest, CancellationToken cancellationToken)
         {
             var userId = User.GetUserIdFromToken();
-            await _voteService.VoteAsync(userId, createVoteRequest);
+            await _voteService.VoteAsync(userId, createVoteRequest, cancellationToken);
             return NoContent();
         }
 
@@ -36,7 +36,7 @@ namespace Api.Controllers
         public async Task<IActionResult> DeleteVoteAsync(int movieId, CancellationToken cancellationToken)
         {
             var userId = User.GetUserIdFromToken();
-            await _voteService.DeleteVoteAsync(userId, movieId);
+            await _voteService.DeleteVoteAsync(userId, movieId, cancellationToken);
             return NoContent();
         }
 

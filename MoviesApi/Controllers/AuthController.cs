@@ -20,7 +20,7 @@ namespace Api.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] AuthLoginRequest request, CancellationToken cancellationToken)
         {
-            var token = await _authService.LoginAsync(request);
+            var token = await _authService.LoginAsync(request, cancellationToken);
             return HandleResult(token);
         }
 
@@ -28,7 +28,7 @@ namespace Api.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] AuthRegisterRequest authRegisterRequest, CancellationToken cancellationToken)
         {
-            var user = await _authService.RegisterAsync(authRegisterRequest);
+            var user = await _authService.RegisterAsync(authRegisterRequest, cancellationToken);
 
             return HandleResult(user);
         }

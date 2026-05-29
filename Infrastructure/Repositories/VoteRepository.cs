@@ -1,4 +1,4 @@
-﻿using Domain.Interfaces.Repositories;
+using Domain.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Domain.Entities;
 using Infrastructure.Data;
@@ -14,39 +14,39 @@ namespace Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task AddAsync(Vote vote)
+        public async Task AddAsync(Vote vote, CancellationToken cancellationToken = default)
         {
-            await _context.Votes.AddAsync(vote);
+            await _context.Votes.AddAsync(vote, cancellationToken);
         }
 
-        public async Task SaveChangesAsync()
+        public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<IEnumerable<Vote>> GetAllVotesAsync()
+        public async Task<IEnumerable<Vote>> GetAllVotesAsync(CancellationToken cancellationToken = default)
         {
-            return await _context.Votes.ToListAsync();
+            return await _context.Votes.ToListAsync(cancellationToken);
         }
 
-        public async Task<Vote?> GetVoteByIdAsync(int id)
+        public async Task<Vote?> GetVoteByIdAsync(int id, CancellationToken cancellationToken = default)
         {
-            return await _context.Votes.FindAsync(id); ;
+            return await _context.Votes.FirstOrDefaultAsync(v => v.Id == id, cancellationToken);
         }
 
-        public async Task<Vote?> ExistsVoteAsync(int userId, int movieId)
+        public async Task<Vote?> ExistsVoteAsync(int userId, int movieId, CancellationToken cancellationToken = default)
         {
             return await _context.Votes
-                .IgnoreQueryFilters() 
+                .IgnoreQueryFilters()
                 .FirstOrDefaultAsync(v =>
                     v.UserId == userId &&
-                    v.MovieId == movieId);
+                    v.MovieId == movieId, cancellationToken);
         }
 
-        public async Task DeleteVoteAsync(Vote vote)
+        public async Task DeleteVoteAsync(Vote vote, CancellationToken cancellationToken = default)
         {
             _context.Votes.Update(vote);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }

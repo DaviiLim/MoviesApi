@@ -1,4 +1,4 @@
-﻿using Domain.DTOs.Pagination;
+using Domain.DTOs.Pagination;
 using Domain.Entities;
 using Domain.Enums.User;
 using Domain.Interfaces.Repositories;
@@ -17,29 +17,27 @@ namespace Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<User> CreateUserAsync(User user)
+        public async Task<User> CreateUserAsync(User user, CancellationToken cancellationToken = default)
         {
-            await _context.Users.AddAsync(user);
-            await _context.SaveChangesAsync();
+            await _context.Users.AddAsync(user, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
             return user;
         }
 
-        public async Task<PaginationResponse<User>> GetAllUsersAsync(PaginationParams paginationParams)
+        public async Task<PaginationResponse<User>> GetAllUsersAsync(PaginationParams paginationParams, CancellationToken cancellationToken = default)
         {
             var query = _context.Users
                 .AsNoTracking()
                 .AsQueryable();
 
+            var totalItems = await query.CountAsync(cancellationToken);
 
-            var totalItems = await query.CountAsync();
-
-            query = query
-                .OrderBy(u => u.Name);
+            query = query.OrderBy(u => u.Name);
 
             var pagedMovies = await query
                 .Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)
                 .Take(paginationParams.PageSize)
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
 
             return new PaginationResponse<User>
             {
@@ -50,27 +48,26 @@ namespace Infrastructure.Repositories
             };
         }
 
-        public async Task<User?> GetUserByIdAsync(int id)
+        public async Task<User?> GetUserByIdAsync(int id, CancellationToken cancellationToken = default)
         {
-            return await _context.Users.FindAsync(id);
+            return await _context.Users.FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
         }
 
-        public async Task<User?> GetUserByEmailAsync(string email)
+        public async Task<User?> GetUserByEmailAsync(string email, CancellationToken cancellationToken = default)
         {
-            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email); ;
+            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
         }
 
-        public async Task UpdateUserAsync(User user)
-        {
-            _context.Users.Update(user);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task DeleteUserAsync(User user)
+        public async Task UpdateUserAsync(User user, CancellationToken cancellationToken = default)
         {
             _context.Users.Update(user);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
         }
 
+        public async Task DeleteUserAsync(User user, CancellationToken cancellationToken = default)
+        {
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync(cancellationToken);
+        }
     }
 }
