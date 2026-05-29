@@ -26,7 +26,7 @@ namespace Application.Services
         {
             var movieByTitle = await _movieRepository.GetMovieByTitleAsync(createMovieRequest.Title, cancellationToken);
             if (movieByTitle != null)
-                return Result.Fail(new NotFoundError("This Title is already in use."));
+                return Result.Fail(new ConflictError("This Title is already in use."));
 
             var movie = _mapping.CreateMovieRequestToEntity(createMovieRequest);
             await _movieRepository.CreateMovieAsync(movie, cancellationToken);
@@ -34,7 +34,6 @@ namespace Application.Services
             var movieDetailsResponse = _mapping.ToDetailsResponse(movie, 0, 0);
             return Result.Ok(movieDetailsResponse);
         }
-
         public async Task<Result<PaginationResponse<MovieTitleResponse>>> GetAllMovieAsync(
             PaginationParams paginationParams,
             string? title,
