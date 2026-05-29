@@ -14,6 +14,6 @@ namespace Domain.Entities
         public DateTime? UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
 
-        public ICollection<Vote>? Votes { get; }
+        public ICollection<Vote>? Votes { get; set; }
     }
 }
