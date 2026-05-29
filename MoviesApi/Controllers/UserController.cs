@@ -49,15 +49,15 @@ namespace Api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUserAsync(int id, UpdateUser updateUser, CancellationToken cancellationToken)
         {
-            await _userService.UpdateUserAsync(id, updateUser, cancellationToken);
-            return NoContent();
+            var result = await _userService.UpdateUserAsync(id, updateUser, cancellationToken);
+            return HandleResult(result);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUserAsync(int id, CancellationToken cancellationToken)
         {
-            await _userService.DeleteUserAsync(id, cancellationToken);
-            return NoContent();
+            var result = await _userService.DeleteUserAsync(id, cancellationToken);
+            return HandleResult(result);
         }
     }
 }

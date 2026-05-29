@@ -11,7 +11,7 @@ namespace Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class VoteController : ControllerBase
+    public class VoteController : BaseApiController
     {
         private readonly IVoteService _voteService;
 
@@ -25,8 +25,8 @@ namespace Api.Controllers
         public async Task<IActionResult> VoteAsync(CreateVoteRequest createVoteRequest, CancellationToken cancellationToken)
         {
             var userId = User.GetUserIdFromToken();
-            await _voteService.VoteAsync(userId, createVoteRequest, cancellationToken);
-            return NoContent();
+            var result = await _voteService.VoteAsync(userId, createVoteRequest, cancellationToken);
+            return HandleResult(result);
         }
 
 
@@ -36,8 +36,8 @@ namespace Api.Controllers
         public async Task<IActionResult> DeleteVoteAsync(int movieId, CancellationToken cancellationToken)
         {
             var userId = User.GetUserIdFromToken();
-            await _voteService.DeleteVoteAsync(userId, movieId, cancellationToken);
-            return NoContent();
+            var result = await _voteService.DeleteVoteAsync(userId, movieId, cancellationToken);
+            return HandleResult(result);
         }
 
     }
