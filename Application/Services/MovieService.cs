@@ -82,9 +82,9 @@ namespace Application.Services
 
             var totalVotes = votes.Count();
 
-            var MovieDetailsResponse = _mapping.ToDetailsResponse(movie, averageScore, totalVotes);
+            var movieDetailsResponse = _mapping.ToDetailsResponse(movie, averageScore, totalVotes);
 
-            return Result.Ok(MovieDetailsResponse);
+            return Result.Ok(movieDetailsResponse);
         }
 
         public async Task<Result<IEnumerable<MovieTitleResponse>>> GetAllMoviesVotedByUser(int userId, CancellationToken cancellationToken = default)
