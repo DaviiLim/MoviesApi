@@ -1,0 +1,14 @@
+global using FluentResults;
+global using Domain.Entities;
+global using Domain.Errors;
+global using Domain.DTOs.Pagination;
+global using Domain.Enums.Movie;
+global using Domain.Enums.User;
+global using Domain.Enums.Vote;
+global using Domain.Interfaces.Repositories;
+global using Application.DTOs.Auth;
+global using Application.DTOs.Movie;
+global using Application.DTOs.User;
+global using Application.DTOs.Vote;
+global using Application.Interfaces.Mappers;
+global using Application.Interfaces.Services;

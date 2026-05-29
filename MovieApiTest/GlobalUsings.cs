@@ -1,0 +1,9 @@
+global using Xunit;
+global using NSubstitute;
+global using FluentAssertions;
+global using Domain.Entities;
+global using Domain.Interfaces.Repositories;
+global using Application.Services;
+global using Application.Interfaces.Mappers;
+global using Application.DTOs.Movie;
+global using Domain.DTOs.Pagination;
