@@ -86,7 +86,7 @@ public class VoteServiceTests
                 ReleasedYear = 2024
             });
 
-        _voteRepository.ExistsVoteAsync(userId, 10)
+        _voteRepository.FindVoteAsync(userId, 10)
             .Returns(null as Vote);
 
         var voteEntity = new Vote { MovieId = 10, Score = 5 };
@@ -149,7 +149,7 @@ public class VoteServiceTests
         _movieRepository.GetMovieByIdAsync(10)
             .Returns(movie);
 
-        _voteRepository.ExistsVoteAsync(userId, 10)
+        _voteRepository.FindVoteAsync(userId, 10)
             .Returns(existingVote);
 
         var request = new CreateVoteRequest
@@ -195,8 +195,8 @@ public class VoteServiceTests
                 Cast = new List<string> { "Actor1" },
             });
 
-        _voteRepository.GetAllVotesAsync()
-            .Returns(new List<Vote>());
+        _voteRepository.FindVoteAsync(userId, movieId)
+            .Returns(null as Vote);
 
         var result = await _service.DeleteVoteAsync(userId, movieId);
 
@@ -236,8 +236,8 @@ public class VoteServiceTests
             Status = VoteStatus.Active
         };
 
-        _voteRepository.GetAllVotesAsync()
-            .Returns(new List<Vote> { vote });
+        _voteRepository.FindVoteAsync(userId, movieId)
+            .Returns(vote);
 
         var result = await _service.DeleteVoteAsync(userId, movieId);
 

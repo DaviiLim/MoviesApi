@@ -34,7 +34,7 @@ namespace Infrastructure.Repositories
             return await _context.Votes.FirstOrDefaultAsync(v => v.Id == id, cancellationToken);
         }
 
-        public async Task<Vote?> ExistsVoteAsync(int userId, int movieId, CancellationToken cancellationToken = default)
+        public async Task<Vote?> FindVoteAsync(int userId, int movieId, CancellationToken cancellationToken = default)
         {
             return await _context.Votes
                 .IgnoreQueryFilters()
