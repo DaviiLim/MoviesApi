@@ -2,10 +2,7 @@
 using Application.DTOs.Vote;
 using Application.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using System.Reflection.Metadata.Ecma335;
-using System.Security.Claims;
 
 namespace Api.Controllers
 {

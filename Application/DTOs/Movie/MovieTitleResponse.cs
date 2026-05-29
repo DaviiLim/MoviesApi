@@ -10,6 +10,6 @@ namespace Application.DTOs.Movie
         public required List<string> Directors { get; set; }
         public required string Genres { get; set; }
         public float AverageScore { get; set; }
-        public float TotalVotes { get; set; }
+        public int TotalVotes { get; set; }
     }
 }

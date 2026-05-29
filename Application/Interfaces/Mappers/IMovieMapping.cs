@@ -7,7 +7,7 @@ namespace Application.Interfaces.Mappers
     public interface IMovieMapping
     {
         Movie CreateMovieRequestToEntity(CreateMovieRequest createMovieRequest);
-        MovieTitleResponse ToMovieTitleResponse(Movie movie, float averageScore, float totalVotes);
-        MovieDetailsResponse ToDetailsResponse(Movie movie, float averageScore, float totalVotes);
+        MovieTitleResponse ToMovieTitleResponse(Movie movie, float averageScore, int totalVotes);
+        MovieDetailsResponse ToDetailsResponse(Movie movie, float averageScore, int totalVotes);
     }
 }

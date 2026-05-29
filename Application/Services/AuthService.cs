@@ -25,7 +25,7 @@ namespace Application.Services
         {
             var user = await _userRepository.GetUserByEmailAsync(authLoginRequest.Email, cancellationToken);
             if (user == null)
-                return Result.Fail(new NotFoundError("User not found."));
+                return Result.Fail(new UnauthorizedError("Invalid credentials."));
 
             if (!BCrypt.Net.BCrypt.Verify(authLoginRequest.Password, user.Password))
                 return Result.Fail(new UnauthorizedError("Invalid credentials."));

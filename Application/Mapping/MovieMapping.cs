@@ -22,7 +22,7 @@ namespace Application.Mapping
             };
         }
 
-        public MovieTitleResponse ToMovieTitleResponse(Movie movie, float averageScore, float totalVotes)
+        public MovieTitleResponse ToMovieTitleResponse(Movie movie, float averageScore, int totalVotes)
         {
             return new MovieTitleResponse
             {
@@ -36,7 +36,7 @@ namespace Application.Mapping
             };
         }
 
-        public MovieDetailsResponse ToDetailsResponse(Movie movie, float averageScore, float totalVotes)
+        public MovieDetailsResponse ToDetailsResponse(Movie movie, float averageScore, int totalVotes)
         {
             return new MovieDetailsResponse
             {
