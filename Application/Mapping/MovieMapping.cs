@@ -22,7 +22,7 @@ namespace Application.Mapping
             };
         }
 
-        public MovieTitleResponse ToMovieTitleResponse(Movie movie, float avarageScore, float totalVotes)
+        public MovieTitleResponse ToMovieTitleResponse(Movie movie, float averageScore, float totalVotes)
         {
             return new MovieTitleResponse
             {
@@ -31,12 +31,12 @@ namespace Application.Mapping
                 Cast = movie.Cast,
                 Directors = movie.Directors,
                 Genres = movie.Genres,
-                AvarageScore = avarageScore,
+                AverageScore = averageScore,
                 TotalVotes = totalVotes
             };
         }
 
-        public MovieDetailsResponse ToDetailsResponse(Movie movie, float avarageScore, float totalVotes)
+        public MovieDetailsResponse ToDetailsResponse(Movie movie, float averageScore, float totalVotes)
         {
             return new MovieDetailsResponse
             {
@@ -49,7 +49,7 @@ namespace Application.Mapping
                 Cast = movie.Cast,
                 Directors = movie.Directors,
                 ReleasedYear = movie.ReleasedYear,
-                AvarageScore = avarageScore,
+                AverageScore = averageScore,
                 TotalVotes = totalVotes
             };
         }

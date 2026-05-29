@@ -133,7 +133,7 @@ public class MovieServiceTests
                 Cast = new List<string> { "Actor 1" },
                 Directors = new List<string> { "Director 1" },
                 ReleasedYear = 2022,
-                AvarageScore = 7,
+                AverageScore = 7,
                 TotalVotes = 2
             });
 
@@ -182,7 +182,7 @@ public class MovieServiceTests
 
         result.IsSuccess.Should().BeTrue();
         result.Value.TotalItems.Should().Be(1);
-        result.Value.Items.First().AvarageScore.Should().Be(6);
+        result.Value.Items.First().AverageScore.Should().Be(6);
         result.Value.Items.First().TotalVotes.Should().Be(2);
     }
 

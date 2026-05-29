@@ -34,7 +34,7 @@ namespace Infrastructure.Repositories
 
             query = query.OrderBy(u => u.Name);
 
-            var pagedMovies = await query
+            var pagedUsers = await query
                 .Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)
                 .Take(paginationParams.PageSize)
                 .ToListAsync(cancellationToken);
@@ -44,7 +44,7 @@ namespace Infrastructure.Repositories
                 PageNumber = paginationParams.PageNumber,
                 PageSize = paginationParams.PageSize,
                 TotalItems = totalItems,
-                Items = pagedMovies
+                Items = pagedUsers
             };
         }
 

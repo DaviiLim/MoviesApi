@@ -14,7 +14,7 @@ namespace Api.Controllers
     {
         private readonly IMovieService _movieService;
 
-        public MovieController(IMovieService movieService, IHttpContextAccessor httpContextAccessor)
+        public MovieController(IMovieService movieService)
         {
             _movieService = movieService;
         }
@@ -59,16 +59,16 @@ namespace Api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateMovieAsync(int id, UpdateMovie updateMovie, CancellationToken cancellationToken)
         {
-            await _movieService.UpdateMovieAsync(id, updateMovie, cancellationToken);
-            return NoContent();
+            var result = await _movieService.UpdateMovieAsync(id, updateMovie, cancellationToken);
+            return HandleResult(result);
         }
 
         [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMovieAsync(int id, CancellationToken cancellationToken)
         {
-            await _movieService.DeleteMovieAsync(id, cancellationToken);
-            return NoContent();
+            var result = await _movieService.DeleteMovieAsync(id, cancellationToken);
+            return HandleResult(result);
         }
 
     }

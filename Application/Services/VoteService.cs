@@ -34,7 +34,7 @@ namespace Application.Services
                 return Result.Fail(new NotFoundError("Movie not found."));
 
             var existingVote = await _voteRepository
-                .ExistsVoteAsync(userId, movie.Id, cancellationToken);
+                .FindVoteAsync(userId, movie.Id, cancellationToken);
 
             if (existingVote == null)
             {
@@ -63,9 +63,7 @@ namespace Application.Services
             if (movie == null)
                 return Result.Fail(new NotFoundError("Movie not found."));
 
-            var votes = await _voteRepository.GetAllVotesAsync(cancellationToken);
-
-            var userVotedMovie = votes.FirstOrDefault(v => v.MovieId == movieId && v.UserId == userId);
+            var userVotedMovie = await _voteRepository.FindVoteAsync(userId, movieId, cancellationToken);
 
             if (userVotedMovie == null)
                 return Result.Fail(new NotFoundError("Vote not Found."));

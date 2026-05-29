@@ -23,6 +23,25 @@ namespace Api.Controllers
                 ConflictError => Conflict(new { message = firstError.Message }),
                 ForbiddenError => StatusCode(403, new { message = firstError.Message }),
                 UnauthorizedError => Unauthorized(new { message = firstError.Message }),
+                ValidationError => BadRequest(new { message = firstError.Message }),
+                _ => BadRequest(new { errors = result.Errors.Select(e => e.Message) })
+            };
+        }
+
+        protected IActionResult HandleResult(Result result)
+        {
+            if (result.IsSuccess)
+                return NoContent();
+
+            var firstError = result.Errors.FirstOrDefault();
+
+            return firstError switch
+            {
+                NotFoundError => NotFound(new { message = firstError.Message }),
+                ConflictError => Conflict(new { message = firstError.Message }),
+                ForbiddenError => StatusCode(403, new { message = firstError.Message }),
+                UnauthorizedError => Unauthorized(new { message = firstError.Message }),
+                ValidationError => BadRequest(new { message = firstError.Message }),
                 _ => BadRequest(new { errors = result.Errors.Select(e => e.Message) })
             };
         }

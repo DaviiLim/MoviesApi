@@ -26,7 +26,7 @@ namespace Application.Services
         {
             var movieByTitle = await _movieRepository.GetMovieByTitleAsync(createMovieRequest.Title, cancellationToken);
             if (movieByTitle != null)
-                return Result.Fail(new NotFoundError("This Title is already in use."));
+                return Result.Fail(new ConflictError("This Title is already in use."));
 
             var movie = _mapping.CreateMovieRequestToEntity(createMovieRequest);
             await _movieRepository.CreateMovieAsync(movie, cancellationToken);
@@ -34,7 +34,6 @@ namespace Application.Services
             var movieDetailsResponse = _mapping.ToDetailsResponse(movie, 0, 0);
             return Result.Ok(movieDetailsResponse);
         }
-
         public async Task<Result<PaginationResponse<MovieTitleResponse>>> GetAllMovieAsync(
             PaginationParams paginationParams,
             string? title,
@@ -58,7 +57,7 @@ namespace Application.Services
                     Genres = m.Genres,
                     Directors = m.Directors,
                     Cast = m.Cast,
-                    AvarageScore = m.Votes!.Any()
+                    AverageScore = m.Votes!.Any()
                         ? m.Votes!.Average(v => v.Score)
                         : 0,
                     TotalVotes = m.Votes!.Count
@@ -83,9 +82,9 @@ namespace Application.Services
 
             var totalVotes = votes.Count();
 
-            var MovieDetailsResponse = _mapping.ToDetailsResponse(movie, averageScore, totalVotes);
+            var movieDetailsResponse = _mapping.ToDetailsResponse(movie, averageScore, totalVotes);
 
-            return Result.Ok(MovieDetailsResponse);
+            return Result.Ok(movieDetailsResponse);
         }
 
         public async Task<Result<IEnumerable<MovieTitleResponse>>> GetAllMoviesVotedByUser(int userId, CancellationToken cancellationToken = default)
