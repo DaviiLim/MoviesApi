@@ -57,7 +57,7 @@ namespace Application.Services
                     Genres = m.Genres,
                     Directors = m.Directors,
                     Cast = m.Cast,
-                    AvarageScore = m.Votes!.Any()
+                    AverageScore = m.Votes!.Any()
                         ? m.Votes!.Average(v => v.Score)
                         : 0,
                     TotalVotes = m.Votes!.Count
